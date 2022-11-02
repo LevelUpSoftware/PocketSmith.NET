@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="JsonConverters\" />
+    <Folder Include="Attributes\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Constants\" />
+    <Folder Include="Services\Accounts\Models\" />
+    <Folder Include="Services\Budgets\Models\" />
+    <Folder Include="Services\Categories\Models\" />
+    <Folder Include="Services\CategoryRules\" />
+    <Folder Include="Services\Institutions\Models\" />
+    <Folder Include="Services\Labels\" />
+    <Folder Include="Services\Currencies\" />
+    <Folder Include="Services\TimeZones\" />
+    <Folder Include="Services\SavedSearches\" />
+    <Folder Include="Services\TransactionAccounts\Models\" />
+    <Folder Include="Services\Users\Models\" />
+    <Folder Include="Services\Users\Mappers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+  </ItemGroup>
+
+</Project>
