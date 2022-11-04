@@ -20,7 +20,7 @@ public class PocketSmithTransactionAccount
     public string LatestFeedName { get; set; }
 
     [JsonPropertyName("number")]
-    public long? Number { get; set; }
+    public string Number { get; set; }
 
     [JsonConverter(typeof(AccountTypeJsonConverter))]
     [JsonPropertyName("type")]
@@ -44,9 +44,9 @@ public class PocketSmithTransactionAccount
     [JsonPropertyName("current_balance_exchange_rate")]
     public double? CurrentBalanceExchangeRate { get; set; }
 
-    [JsonConverter(typeof(DateTimeToShortDateJsonConverter))]
+    [JsonConverter(typeof(DateOnlyToShortDateStringConverter))]
     [JsonPropertyName("current_balance_date")]
-    public DateTime CurrentBalanceDate { get; set; }
+    public DateOnly CurrentBalanceDate { get; set; }
 
     [JsonPropertyName("current_balance_source")]
     public string CurrentBalanceSource { get; set; }
@@ -66,9 +66,9 @@ public class PocketSmithTransactionAccount
     [JsonPropertyName("starting_balance")]
     public double StartingBalance { get; set; }
 
-    [JsonConverter(typeof(DateTimeToShortDateJsonConverter))]
+    [JsonConverter(typeof(DateOnlyToShortDateStringConverter))]
     [JsonPropertyName("starting_balance_date")]
-    public DateTime StartingBalanceDate { get; set; }
+    public DateOnly StartingBalanceDate { get; set; }
 
     [JsonPropertyName("institution")] 
     public PocketSmithInstitution Institution { get; set; }
@@ -79,9 +79,11 @@ public class PocketSmithTransactionAccount
     [JsonPropertyName("data_feeds_connection_id")]
     public string DataFeedsConnectionId { get; set; }
 
+    [JsonConverter(typeof(DateTimeConverter))]
     [JsonPropertyName("created_at")]
     public DateTime CreatedAt { get; set; }
 
+    [JsonConverter(typeof(DateTimeConverter))]
     [JsonPropertyName("updated_at")]
     public DateTime UpdatedAt { get; set; }
 }

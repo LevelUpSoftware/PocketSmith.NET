@@ -1,9 +1,6 @@
-﻿using PocketSmith.NET.Constants;
-using PocketSmith.NET.Exceptions;
-using PocketSmith.NET.Models;
+﻿using PocketSmith.NET.Exceptions;
 using System.Net.Http.Json;
 using System.Text.Json;
-using PocketSmith.NET.JsonConverters;
 
 namespace PocketSmith.NET.Extensions;
 
@@ -18,12 +15,12 @@ public class ApiHelper
 
     public async Task<TApiModel> PostAsync<TApiModel>(Uri uri, object requestBody)
     {
-        var httpResults = await HttpClient.PostAsJsonAsync(uri, requestBody);
-        var contentResponseString = await httpResults.Content.ReadAsStringAsync();
+        var httpResponse = await HttpClient.PostAsJsonAsync(uri, requestBody);
+        var contentResponseString = await httpResponse.Content.ReadAsStringAsync();
 
-        if (!httpResults.IsSuccessStatusCode)
+        if (!httpResponse.IsSuccessStatusCode)
         {
-            throw new RestApiException(uri.AbsolutePath, httpResults.StatusCode, contentResponseString);
+            throw new RestApiException(uri.AbsolutePath, httpResponse.StatusCode, contentResponseString);
         }
 
         var resultObject = JsonSerializer.Deserialize<TApiModel>(contentResponseString);
@@ -32,12 +29,12 @@ public class ApiHelper
 
     public async Task<TApiModel> PutAsync<TApiModel>(Uri uri, object requestBody)
     {
-        var httpResults = await HttpClient.PutAsJsonAsync(uri, requestBody);
-        var contentResponseString = await httpResults.Content.ReadAsStringAsync();
+        var httpResponse = await HttpClient.PutAsJsonAsync(uri, requestBody);
+        var contentResponseString = await httpResponse.Content.ReadAsStringAsync();
 
-        if (!httpResults.IsSuccessStatusCode)
+        if (!httpResponse.IsSuccessStatusCode)
         {
-            throw new RestApiException(uri.AbsolutePath, httpResults.StatusCode, contentResponseString);
+            throw new RestApiException(uri.AbsolutePath, httpResponse.StatusCode, contentResponseString);
         }
 
         var resultObject = JsonSerializer.Deserialize<TApiModel>(contentResponseString);
@@ -46,24 +43,24 @@ public class ApiHelper
 
     public async Task DeleteAsync(Uri uri)
     {
-        var httpResults = await HttpClient.DeleteAsync(uri);
-        var contentResponseString = await httpResults.Content.ReadAsStringAsync();
+        var httpResponse = await HttpClient.DeleteAsync(uri);
+        var contentResponseString = await httpResponse.Content.ReadAsStringAsync();
 
-        if (httpResults.IsSuccessStatusCode)
+        if (httpResponse.IsSuccessStatusCode)
         {
-            throw new RestApiException(uri.AbsolutePath, httpResults.StatusCode, contentResponseString);
+            throw new RestApiException(uri.AbsolutePath, httpResponse.StatusCode, contentResponseString);
         }
     }
 
     public async Task<TApiModel> GetAsync<TApiModel>(Uri uri)
     {
-        var httpResults = await HttpClient.GetAsync(uri);
+        var httpResponse = await HttpClient.GetAsync(uri);
 
-        var contentResponseString = await httpResults.Content.ReadAsStringAsync();
+        var contentResponseString = await httpResponse.Content.ReadAsStringAsync();
 
-        if (!httpResults.IsSuccessStatusCode)
+        if (!httpResponse.IsSuccessStatusCode)
         {
-            throw new RestApiException(uri.AbsolutePath, httpResults.StatusCode, contentResponseString);
+            throw new RestApiException(uri.AbsolutePath, httpResponse.StatusCode, contentResponseString);
         }
 
 

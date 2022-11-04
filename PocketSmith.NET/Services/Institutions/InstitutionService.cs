@@ -10,12 +10,17 @@ public class InstitutionService : ServiceBase<PocketSmithInstitution, int>, IIns
     {
     }
 
+    public virtual async Task<IEnumerable<PocketSmithInstitution>> GetAllAsync()
+    {
+        return await base.GetAllAsync();
+    }
+
     public virtual async Task<PocketSmithInstitution> CreateAsync(CreatePocketSmithInstitution createItem)
     {
         var uri = UriBuilder.AddRouteFromModel(typeof(PocketSmithUser))
             .AddRoute(UserId.ToString())
             .AddRouteFromModel(typeof(PocketSmithInstitution))
-            .Uri;
+            .GetUriAndReset();
 
         var requestObject = new
         {
@@ -32,9 +37,14 @@ public class InstitutionService : ServiceBase<PocketSmithInstitution, int>, IIns
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithInstitution))
             .AddRoute(id.ToString())
-            .Uri;
+            .GetUriAndReset();
 
         await ApiHelper.DeleteAsync(uri);
+    }
+
+    public virtual async Task<PocketSmithInstitution> GetByIdAsync(int id)
+    {
+        return await base.GetByIdAsync(id);
     }
 
     public virtual async Task<PocketSmithInstitution> UpdateAsync(UpdatePocketSmithInstitution updatedInstitution, int id)
@@ -42,7 +52,7 @@ public class InstitutionService : ServiceBase<PocketSmithInstitution, int>, IIns
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithInstitution))
             .AddRoute(id.ToString())
-            .Uri;
+            .GetUriAndReset();
 
         var request = new
         {

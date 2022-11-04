@@ -17,7 +17,7 @@ public class UserService : ServiceBase<PocketSmithUser, int>, IUserService
 
     public virtual async Task<PocketSmithUser> GetAuthorizedUserAsync()
     {
-        var results = await ApiHelper.GetAsync<PocketSmithUser>(UriBuilder.AddRoute("me").Uri);
+        var results = await ApiHelper.GetAsync<PocketSmithUser>(UriBuilder.AddRoute("me").GetUriAndReset());
         return results;
     }
 
@@ -32,7 +32,7 @@ public class UserService : ServiceBase<PocketSmithUser, int>, IUserService
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithUser))
             .AddRoute(UserId.ToString())
-            .Uri;
+            .GetUriAndReset();
 
         var request = new
         {

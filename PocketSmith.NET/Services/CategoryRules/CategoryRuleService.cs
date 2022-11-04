@@ -19,7 +19,7 @@ public class CategoryRuleService : ServiceBase<PocketSmithCategoryRule, string>,
             .AddRouteFromModel(typeof(PocketSmithCategory))
             .AddRoute(categoryId.ToString())
             .AddRouteFromModel(typeof(PocketSmithCategoryRule))
-            .Uri;
+            .GetUriAndReset();
 
         var request = new
         {
@@ -29,6 +29,18 @@ public class CategoryRuleService : ServiceBase<PocketSmithCategoryRule, string>,
         };
 
         var response = await ApiHelper.PostAsync<PocketSmithCategoryRule>(uri, request);
+        return response;
+    }
+
+    public virtual async Task<IEnumerable<PocketSmithCategoryRule>> GetAllAsync()
+    {
+        var uri = UriBuilder
+            .AddRouteFromModel(typeof(PocketSmithUser))
+            .AddRoute(UserId.ToString())
+            .AddRouteFromModel(typeof(PocketSmithCategoryRule))
+            .GetUriAndReset();
+
+        var response = await ApiHelper.GetAsync<List<PocketSmithCategoryRule>>(uri);
         return response;
     }
 }

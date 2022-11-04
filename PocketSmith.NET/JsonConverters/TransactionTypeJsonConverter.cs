@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
+using System.Globalization;
 
 namespace PocketSmith.NET.JsonConverters;
 
@@ -13,14 +14,14 @@ public class TransactionTypeJsonConverter : JsonConverter<PocketSmithTransaction
         if (reader.TokenType == JsonTokenType.String)
         {
             stringValue = reader.GetString();
-            var parseSuccess = EnumExtensions.TryParse(stringValue!, out PocketSmithTransactionType? accountType);
+            var parseSuccess = EnumExtensions.TryParse(stringValue!, out PocketSmithTransactionType? transactionType);
             if (parseSuccess)
             {
-                return accountType.Value;
+                return transactionType.Value;
             }
         }
 
-        throw new JsonException($"Failed to parse PocketSmithAccountType. Input value: {stringValue}");
+        throw new JsonException($"Failed to parse PocketSmithTransactionType. Input value: {stringValue}");
     }
 
     public override void Write(Utf8JsonWriter writer, PocketSmithTransactionType value, JsonSerializerOptions options)

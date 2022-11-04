@@ -16,12 +16,12 @@ public class EventService : ServiceBase<PocketSmithEvent, string>, IEventService
             .AddRouteFromModel(typeof(PocketSmithAccountScenario))
             .AddRoute(createItem.ScenarioId.ToString())
             .AddRouteFromModel(typeof(PocketSmithEvent))
-            .Uri;
+            .GetUriAndReset();
 
         var request = new
         {
             category_id = createItem.CategoryId,
-            date = createItem.Date.ToString("yyyy-MM-dd"),
+            date = createItem.Date.ToFormattedString(),
             amount = createItem.Amount,
             repeat_type = createItem.RepeatType.GetDisplayName(),
             repeat_interval = createItem.RepeatInterval,
@@ -37,7 +37,7 @@ public class EventService : ServiceBase<PocketSmithEvent, string>, IEventService
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithEvent))
             .AddRoute(id)
-            .Uri;
+            .GetUriAndReset();
 
         await ApiHelper.DeleteAsync(uri);
     }
@@ -47,9 +47,9 @@ public class EventService : ServiceBase<PocketSmithEvent, string>, IEventService
         var uri = UriBuilder.AddRouteFromModel(typeof(PocketSmithAccountScenario))
             .AddRoute(scenarioId.ToString())
             .AddRouteFromModel(typeof(PocketSmithEvent))
-            .AddQuery("start_date", startDate.ToString("yyyy-MM-dd"))
-            .AddQuery("end_date", endDate.ToString("yyyy-MM-dd"))
-            .Uri;
+            .AddQuery("start_date", startDate.ToFormattedString())
+            .AddQuery("end_date", endDate.ToFormattedString())
+            .GetUriAndReset();
 
         var response = await ApiHelper.GetAsync<IEnumerable<PocketSmithEvent>>(uri);
         return response;
@@ -60,9 +60,9 @@ public class EventService : ServiceBase<PocketSmithEvent, string>, IEventService
         var uri = UriBuilder.AddRouteFromModel(typeof(PocketSmithUser))
             .AddRoute(UserId.ToString())
             .AddRouteFromModel(typeof(PocketSmithEvent))
-            .AddQuery("start_date", startDate.ToString("yyyy-MM-dd"))
-            .AddQuery("end_date", endDate.ToString("yyyy-MM-dd"))
-            .Uri;
+            .AddQuery("start_date", startDate.ToFormattedString())
+            .AddQuery("end_date", endDate.ToFormattedString())
+            .GetUriAndReset();
 
         var response = await ApiHelper.GetAsync<IEnumerable<PocketSmithEvent>>(uri);
         return response;
@@ -78,7 +78,7 @@ public class EventService : ServiceBase<PocketSmithEvent, string>, IEventService
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithEvent))
             .AddRoute(id)
-            .Uri;
+            .GetUriAndReset();
 
         var request = new
         {
@@ -91,5 +91,10 @@ public class EventService : ServiceBase<PocketSmithEvent, string>, IEventService
 
         var response = await ApiHelper.PutAsync<PocketSmithEvent>(uri, updateItem);
         return response;
+    }
+
+    public virtual async Task<PocketSmithEvent> GetByIdAsync(string id)
+    {
+        return await base.GetByIdAsync(id);
     }
 }

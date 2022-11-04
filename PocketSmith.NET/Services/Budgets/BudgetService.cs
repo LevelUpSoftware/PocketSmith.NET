@@ -16,7 +16,7 @@ public class BudgetService : ServiceBase<PocketSmithBudget, int>, IBudgetService
             .AddRouteFromModel(typeof(PocketSmithUser))
             .AddRoute(UserId.ToString())
             .AddRoute("forecast_cache")
-            .Uri;
+            .GetUriAndReset();
 
         await ApiHelper.DeleteAsync(uri);
     }
@@ -27,7 +27,7 @@ public class BudgetService : ServiceBase<PocketSmithBudget, int>, IBudgetService
             .AddRouteFromModel(typeof(PocketSmithUser))
             .AddRoute(UserId.ToString())
             .AddRouteFromModel(typeof(PocketSmithBudget))
-            .Uri;
+            .GetUriAndReset();
 
         var response = await ApiHelper.GetAsync<List<PocketSmithBudget>>(uri);
         return response;
@@ -43,7 +43,7 @@ public class BudgetService : ServiceBase<PocketSmithBudget, int>, IBudgetService
             .AddQuery("interval", periodInterval.ToString())
             .AddQuery("start_date", startDate.ToString("yyyy-MM-dd"))
             .AddQuery("end_date", endDate.ToString("yyyy-MM-dd"))
-            .Uri;
+            .GetUriAndReset();
 
         var response = await ApiHelper.GetAsync<PocketSmithBudgetEvent>(uri);
         return response;
@@ -61,7 +61,7 @@ public class BudgetService : ServiceBase<PocketSmithBudget, int>, IBudgetService
             .AddQuery("end_date", endDate.ToString("yyyy-MM-dd"))
             .AddQuery("categories", string.Join(",", categoryIds))
             .AddQuery("scenarios", string.Join(",", scenarioIds))
-            .Uri;
+            .GetUriAndReset();
 
         var response = await ApiHelper.GetAsync<PocketSmithBudgetEvent>(uri);
         return response;

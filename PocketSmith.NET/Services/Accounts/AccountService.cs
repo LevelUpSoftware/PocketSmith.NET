@@ -10,12 +10,17 @@ public class AccountService : ServiceBase<PocketSmithAccount, int>, IAccountServ
     {
     }
 
+    public virtual async Task<PocketSmithAccount> GetByIdAsync(int id)
+    {
+        return await base.GetByIdAsync(id);
+    }
+
     public virtual async Task<PocketSmithAccount> UpdateAsync(UpdatePocketSmithAccount updateAccount, int id)
     {
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithAccount))
             .AddRoute(id.ToString())
-            .Uri;
+            .GetUriAndReset();
 
         var requestObject = new
         {
@@ -34,17 +39,23 @@ public class AccountService : ServiceBase<PocketSmithAccount, int>, IAccountServ
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithAccount))
             .AddRoute(id.ToString())
-            .Uri;
+            .GetUriAndReset();
 
         await ApiHelper.DeleteAsync(uri);
     }
+
+    public virtual async Task<IEnumerable<PocketSmithAccount>> GetAllAsync()
+    {
+        return await base.GetAllAsync();
+    }
+
     public virtual async Task<IEnumerable<PocketSmithAccount>> UpdateDisplayOrder(List<int> accountIds)
     {
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithUser))
             .AddRoute(UserId.ToString())
             .AddRouteFromModel(typeof(PocketSmithAccount))
-            .Uri;
+            .GetUriAndReset();
 
         var results = await ApiHelper.PutAsync<List<PocketSmithAccount>>(uri, accountIds.ToArray());
         return results;
@@ -55,7 +66,7 @@ public class AccountService : ServiceBase<PocketSmithAccount, int>, IAccountServ
             .AddRouteFromModel(typeof(PocketSmithUser))
             .AddRoute(createItem.UserId.ToString())
             .AddRouteFromModel(typeof(PocketSmithAccount))
-            .Uri;
+            .GetUriAndReset();
 
         var request = new
         {
@@ -73,7 +84,7 @@ public class AccountService : ServiceBase<PocketSmithAccount, int>, IAccountServ
             .AddRouteFromModel(typeof(PocketSmithInstitution))
             .AddRoute(institutionId.ToString())
             .AddRouteFromModel(typeof(PocketSmithAccount))
-            .Uri;
+            .GetUriAndReset();
 
         var response = await ApiHelper.GetAsync<List<PocketSmithAccount>>(uri);
         return response;

@@ -16,9 +16,9 @@ public class PocketSmithTransaction
     [JsonPropertyName("original_payee")]
     public string OriginalPayee { get; set; }
 
-    [JsonConverter(typeof(DateTimeToShortDateJsonConverter))]
+    [JsonConverter(typeof(DateOnlyToShortDateStringConverter))]
     [JsonPropertyName("date")]
-    public DateTime Date { get; set; }
+    public DateOnly Date { get; set; }
 
     [JsonPropertyName("upload_source")]
     public string UploadSource { get; set; }
@@ -68,4 +68,10 @@ public class PocketSmithTransaction
 
     [JsonPropertyName("updated_at")]
     public DateTime UpDateTime { get; set; }
+
+    [JsonIgnore]
+    public int PageNumber { get; set; }
+
+    [JsonIgnore]
+    public int TotalPages { get; set; }
 }

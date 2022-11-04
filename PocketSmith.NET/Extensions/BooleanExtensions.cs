@@ -2,8 +2,13 @@
 
 public static class BooleanExtensions
 {
-    public static int ToInteger(this bool input)
+    public static int? ToInteger(this bool? input)
     {
-        return input ? 1 : 0;
+        if (input == null)
+        {
+            return null;
+        }
+
+        return input.Value ? 1 : 0;
     }
 }

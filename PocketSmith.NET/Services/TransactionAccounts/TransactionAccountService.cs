@@ -10,12 +10,22 @@ public class TransactionAccountService : ServiceBase<PocketSmithTransactionAccou
     {
     }
 
+    public virtual async Task<PocketSmithTransactionAccount> GetByIdAsync(int id)
+    {
+        return await base.GetByIdAsync(id);
+    }
+
+    public virtual async Task<IEnumerable<PocketSmithTransactionAccount>> GetAllAsync()
+    {
+        return await base.GetAllAsync();
+    }
+
     public async Task<PocketSmithTransactionAccount> UpdateAsync(UpdatePocketSmithTransactionAccount updateItem, int id)
     {
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithTransactionAccount))
             .AddRoute(UserId.ToString())
-            .Uri;
+            .GetUriAndReset();
 
         var request = new
         {

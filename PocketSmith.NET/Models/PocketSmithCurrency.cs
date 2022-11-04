@@ -1,7 +1,9 @@
 ﻿using System.Text.Json.Serialization;
+using PocketSmith.NET.Attributes;
 
 namespace PocketSmith.NET.Models;
 
+[HttpRoute("currencies")]
 public class PocketSmithCurrency
 {
     [JsonPropertyName("id")]

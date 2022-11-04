@@ -58,7 +58,7 @@ public static class EnumExtensions
 
     public static bool TryParse(string inputString, out PocketSmithRefundBehavior? accountType)
     {
-        var members = typeof(PocketSmithAccountType).GetMembers();
+        var members = typeof(PocketSmithRefundBehavior).GetMembers();
 
         foreach (var member in members)
         {
@@ -87,7 +87,7 @@ public static class EnumExtensions
 
     public static bool TryParse(string inputString, out PocketSmithTransactionType? accountType)
     {
-        var members = typeof(PocketSmithAccountType).GetMembers();
+        var members = typeof(PocketSmithTransactionType).GetMembers();
 
         foreach (var member in members)
         {

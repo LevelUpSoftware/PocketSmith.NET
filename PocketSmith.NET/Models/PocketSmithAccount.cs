@@ -25,8 +25,9 @@ public class PocketSmithAccount
     [JsonPropertyName("current_balance_exchange_rate")]
     public double? CurrentBalanceExchangeRate { get; set; }
 
+    [JsonConverter(typeof(DateOnlyToShortDateStringConverter))]
     [JsonPropertyName("current_balance_date")]
-    public string CurrentBalanceDate { get; set; }
+    public DateOnly CurrentBalanceDate { get; set; }
 
     [JsonPropertyName("safe_balance")]
     public double? SafeBalance { get; set; }
@@ -56,9 +57,11 @@ public class PocketSmithAccount
     [JsonPropertyName("scenarios")]
     public List<PocketSmithAccountScenario> Scenarios { get; set; }
 
+    [JsonConverter(typeof(DateTimeConverter))]
     [JsonPropertyName("created_at")]
     public DateTime CreatedAt { get; set; }
 
+    [JsonConverter(typeof(DateTimeConverter))]
     [JsonPropertyName("updated_at")]
     public DateTime UpdatedAt { get; set; }
 }

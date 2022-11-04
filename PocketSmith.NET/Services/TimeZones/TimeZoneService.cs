@@ -8,4 +8,14 @@ public class TimeZoneService : ServiceBase<PocketSmithTimeZone, int>, ITimeZoneS
     public TimeZoneService(int userId, string apiKey) : base(userId, apiKey)
     {
     }
+
+    public virtual async Task<IEnumerable<PocketSmithTimeZone>> GetAllAsync()
+    {
+        var uri = UriBuilder
+            .AddRouteFromModel(typeof(PocketSmithTimeZone))
+            .GetUriAndReset();
+
+        var results = await ApiHelper.GetAsync<List<PocketSmithTimeZone>>(uri);
+        return results;
+    }
 }

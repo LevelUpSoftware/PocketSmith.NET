@@ -4,7 +4,7 @@ using PocketSmith.NET.Extensions;
 
 namespace PocketSmith.NET.JsonConverters;
 
-public class DateTimeToShortDateJsonConverter : JsonConverter<DateOnly>
+public class DateOnlyToShortDateStringConverter : JsonConverter<DateOnly>
 {
     public override DateOnly Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

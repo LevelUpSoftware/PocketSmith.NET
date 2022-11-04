@@ -8,4 +8,9 @@ public class SavedSearchService : ServiceBase<PocketSmithSavedSearch, int>, ISav
     public SavedSearchService(int userId, string apiKey) : base(userId, apiKey)
     {
     }
+
+    public virtual async Task<IEnumerable<PocketSmithSavedSearch>> GetAllAsync()
+    {
+        return await base.GetAllAsync();
+    }
 }
