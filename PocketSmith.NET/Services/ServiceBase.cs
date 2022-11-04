@@ -16,11 +16,6 @@ where TModel: class
         UriBuilder = new UriBuilder(PocketSmithUriConstants.BASE_URI);
         ApiHelper = new ApiHelper(apiKey);
 
-
-        if (!validateCredentials(userId, apiKey))
-        {
-            throw new InvalidOperationException("The provided userId or apiKey is invalid.");
-        }
         UserId = userId;
     }
 
@@ -46,26 +41,5 @@ where TModel: class
         var response = await ApiHelper.GetAsync<TModel>(uri);
        
         return response;
-    }
-
-    private bool validateCredentials(long userId, string apiKey)
-    {
-        if (userId < 1)
-        {
-            throw new ArgumentException($"{nameof(userId)} is invalid.");
-        }
-
-        if (string.IsNullOrEmpty(apiKey))
-        {
-            throw new ArgumentNullException(nameof(apiKey));
-        }
-
-        var uri = UriBuilder
-            .AddRouteFromModel(typeof(PocketSmithUser))
-            .AddRoute(userId.ToString())
-            .GetUriAndReset();
-
-        var results = ApiHelper.HttpClient.GetAsync(uri).Result;
-        return results.IsSuccessStatusCode;
     }
 }
