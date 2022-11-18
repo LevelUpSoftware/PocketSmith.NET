@@ -1,10 +1,11 @@
-﻿using PocketSmith.NET.Models;
+﻿using PocketSmith.NET.ApiHelper;
+using PocketSmith.NET.Models;
 
 namespace PocketSmith.NET.Services.Currencies;
 
-public class CurrencyService : ServiceBase<PocketSmithCurrency, string>, ICurrencyService
+public class CurrencyService : ServiceBase<PocketSmithCurrency, string>, ICurrencyService, IPocketSmithService
 {
-    public CurrencyService(int userId, string apiKey) : base(userId, apiKey)
+    public CurrencyService(IApiHelper apiHelper, int userId, string apiKey) : base(apiHelper, userId, apiKey)
     {
     }
 

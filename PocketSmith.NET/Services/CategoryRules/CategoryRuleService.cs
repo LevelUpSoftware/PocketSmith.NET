@@ -1,11 +1,12 @@
-﻿using PocketSmith.NET.Extensions;
+﻿using PocketSmith.NET.ApiHelper;
+using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 
 namespace PocketSmith.NET.Services.CategoryRules;
 
-public class CategoryRuleService : ServiceBase<PocketSmithCategoryRule, string>, ICategoryRuleService
+public class CategoryRuleService : ServiceBase<PocketSmithCategoryRule, string>, ICategoryRuleService, IPocketSmithService
 {
-    public CategoryRuleService(int userId, string apiKey) : base(userId, apiKey)
+    public CategoryRuleService(IApiHelper apiHelper, int userId, string apiKey) : base(apiHelper, userId, apiKey)
     {
     }
     public virtual async Task<PocketSmithCategoryRule> CreateAsync(int categoryId, string payeeMatchString, bool applyToUnCategorized = false, bool applyToAll = false)
@@ -32,7 +33,7 @@ public class CategoryRuleService : ServiceBase<PocketSmithCategoryRule, string>,
         return response;
     }
 
-    public virtual async Task<IEnumerable<PocketSmithCategoryRule>> GetAllAsync()
+    public new virtual async Task<IEnumerable<PocketSmithCategoryRule>> GetAllAsync()
     {
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithUser))

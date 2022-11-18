@@ -1,16 +1,17 @@
-﻿using PocketSmith.NET.Extensions;
+﻿using PocketSmith.NET.ApiHelper;
+using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 using PocketSmith.NET.Services.Accounts.Models;
 
 namespace PocketSmith.NET.Services.Accounts;
 
-public class AccountService : ServiceBase<PocketSmithAccount, int>, IAccountService
+public class AccountService : ServiceBase<PocketSmithAccount, int>, IAccountService, IPocketSmithService
 {
-    public AccountService(int userId, string apiKey) : base(userId, apiKey)
+    public AccountService(IApiHelper apiHelper, int userId, string apiKey) : base(apiHelper, userId, apiKey)
     {
     }
 
-    public virtual async Task<PocketSmithAccount> GetByIdAsync(int id)
+    public new virtual async Task<PocketSmithAccount> GetByIdAsync(int id)
     {
         return await base.GetByIdAsync(id);
     }
@@ -44,7 +45,7 @@ public class AccountService : ServiceBase<PocketSmithAccount, int>, IAccountServ
         await ApiHelper.DeleteAsync(uri);
     }
 
-    public virtual async Task<IEnumerable<PocketSmithAccount>> GetAllAsync()
+    public new virtual async Task<IEnumerable<PocketSmithAccount>> GetAllAsync()
     {
         return await base.GetAllAsync();
     }

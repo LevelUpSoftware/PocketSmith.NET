@@ -108,7 +108,6 @@ public static class EnumExtensions
                     return true;
                 }
             }
-
         }
         accountType = null;
         return false;

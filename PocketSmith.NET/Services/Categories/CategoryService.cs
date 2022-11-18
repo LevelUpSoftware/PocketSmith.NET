@@ -1,13 +1,14 @@
-﻿using PocketSmith.NET.Extensions;
+﻿using PocketSmith.NET.ApiHelper;
+using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 using PocketSmith.NET.Services.Categories.Models;
 using PocketSmith.NET.Services.Categories.Options;
 
 namespace PocketSmith.NET.Services.Categories;
 
-public class CategoryService : ServiceBase<PocketSmithCategory, int>, ICategoryService
+public class CategoryService : ServiceBase<PocketSmithCategory, int>, ICategoryService, IPocketSmithService
 {
-    public CategoryService(int userId, string apiKey) : base(userId, apiKey)
+    public CategoryService(IApiHelper apiHelper, int userId, string apiKey) : base(apiHelper, userId, apiKey)
     {
     }
     public virtual async Task<PocketSmithCategory> CreateAsync(CreatePocketSmithCategory createItem)

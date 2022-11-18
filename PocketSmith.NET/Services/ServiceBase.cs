@@ -1,4 +1,5 @@
-﻿using PocketSmith.NET.Constants;
+﻿using PocketSmith.NET.ApiHelper;
+using PocketSmith.NET.Constants;
 using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 
@@ -7,14 +8,14 @@ namespace PocketSmith.NET.Services;
 public abstract class ServiceBase<TModel, TId>
 where TModel: class
 {
-    protected ApiHelper ApiHelper;
-    protected readonly UriBuilder UriBuilder;
+    protected IApiHelper ApiHelper { get; }
+    protected UriBuilder UriBuilder { get; }
     protected int UserId { get; }
 
-    protected ServiceBase(int userId, string apiKey)
+    protected ServiceBase(IApiHelper apiHelper, int userId, string apiKey)
     {
         UriBuilder = new UriBuilder(PocketSmithUriConstants.BASE_URI);
-        ApiHelper = new ApiHelper(apiKey);
+        ApiHelper = apiHelper;
 
         UserId = userId;
     }
@@ -34,7 +35,7 @@ where TModel: class
     private protected async Task<TModel> GetByIdAsync(TId id)
     {
         var uri = UriBuilder
-            .AddRouteFromModel(typeof(PocketSmithUser))
+            .AddRouteFromModel(typeof(TModel))
             .AddRoute(id.ToString())
             .GetUriAndReset();
 

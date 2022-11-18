@@ -1,12 +1,13 @@
-﻿using PocketSmith.NET.Extensions;
+﻿using PocketSmith.NET.ApiHelper;
+using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 using PocketSmith.NET.Services.Attachments.Models;
 
 namespace PocketSmith.NET.Services.Attachments;
 
-public class AttachmentService : ServiceBase<PocketSmithAttachment, int>, IAttachmentService
+public class AttachmentService : ServiceBase<PocketSmithAttachment, int>, IAttachmentService, IPocketSmithService
 {
-    public AttachmentService(int userId, string apiKey) : base(userId, apiKey)
+    public AttachmentService(IApiHelper apiHelper, int userId, string apiKey) : base(apiHelper, userId, apiKey)
     {
     }
     public virtual async Task<PocketSmithAttachment> AssignToTransactionAsync(int transactionId, int attachmentId)
@@ -91,7 +92,7 @@ public class AttachmentService : ServiceBase<PocketSmithAttachment, int>, IAttac
         await ApiHelper.DeleteAsync(uri);
     }
 
-    public virtual async Task<PocketSmithAttachment> GetByIdAsync(int id)
+    public new virtual async Task<PocketSmithAttachment> GetByIdAsync(int id)
     {
         return await base.GetByIdAsync(id);
     }

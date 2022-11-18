@@ -1,12 +1,13 @@
-﻿using PocketSmith.NET.Extensions;
+﻿using PocketSmith.NET.ApiHelper;
+using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 using PocketSmith.NET.Services.Events.Models;
 
 namespace PocketSmith.NET.Services.Events;
 
-public class EventService : ServiceBase<PocketSmithEvent, string>, IEventService
+public class EventService : ServiceBase<PocketSmithEvent, string>, IEventService, IPocketSmithService
 {
-    public EventService(int userId, string apiKey) : base(userId, apiKey)
+    public EventService(IApiHelper apiHelper, int userId, string apiKey) : base(apiHelper, userId, apiKey)
     {
     }
 

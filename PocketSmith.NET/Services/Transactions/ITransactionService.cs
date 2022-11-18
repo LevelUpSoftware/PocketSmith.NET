@@ -1,6 +1,5 @@
 ﻿using PocketSmith.NET.Models;
 using PocketSmith.NET.Services.Transactions.Models;
-using PocketSmith.NET.Services.Users.Models;
 
 namespace PocketSmith.NET.Services.Transactions;
 
@@ -17,7 +16,7 @@ public interface ITransactionService
     Task<PocketSmithTransactionSummary> GetAllAsync(int? pageNumber = null,
         PocketSmithTransactionSearch? searchParameters = null);
 
-    Task<PocketSmithTransactionSummary> GetAllByCategoryAsync(int categoryId, int? pageNumber = null,
+    Task<PocketSmithTransactionSummary> GetAllByCategoryIdAsync(int categoryId, int? pageNumber = null,
         PocketSmithTransactionSearch? searchParameters = null);
 
     Task<PocketSmithTransactionSummary> GetAllByTransactionAccountIdAsync(int transactionAccountId,

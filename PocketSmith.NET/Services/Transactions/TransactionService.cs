@@ -1,41 +1,45 @@
-﻿using PocketSmith.NET.Exceptions;
+﻿using System.ComponentModel;
+using FluentValidation;
+using PocketSmith.NET.ApiHelper;
+using PocketSmith.NET.Exceptions;
 using PocketSmith.NET.Extensions;
+using PocketSmith.NET.Factories;
 using PocketSmith.NET.Models;
 using PocketSmith.NET.Services.Transactions.Models;
-using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
-using System.Text.Json;
-using System.Text.RegularExpressions;
+using PocketSmith.NET.Services.Transactions.Validators;
 
 namespace PocketSmith.NET.Services.Transactions;
 
-public class TransactionService : ServiceBase<PocketSmithTransaction, int>, ITransactionService 
+public class TransactionService : ServiceBase<PocketSmithTransaction, int>, ITransactionService, IPocketSmithService
 {
-    public TransactionService(int userId, string apiKey) : base(userId, apiKey)
+    private readonly CreateTransactionValidator _createValidator;
+    public TransactionService(IApiHelper apiHelper, int userId, string apiKey, CreateTransactionValidator createValidator) : base(apiHelper, userId, apiKey)
     {
+        _createValidator = createValidator;
     }
 
     public virtual async Task<PocketSmithTransaction> CreateAsync(CreatePocketSmithTransaction createItem)
     {
+        await _createValidator.ValidateAndThrowAsync(createItem);
+
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithTransactionAccount))
             .AddRoute(createItem.TransactionAccountId.ToString())
             .AddRouteFromModel(typeof(PocketSmithTransaction))
             .GetUriAndReset();
 
-        var request = new
-        {
-            payee = createItem.Payee,
-            amount = createItem.Amount,
-            date = createItem.Date.ToFormattedString(),
-            is_transfer = createItem.IsTransfer,
-            labels = String.Join(",", createItem.Labels),
-            category_id = createItem.CategoryId,
-            note = createItem.Note,
-            memo = createItem.Memo,
-            cheque_number = createItem.CheckNumber.ToString(),
-            needs_review = createItem.NeedsReview
-        };
+        var request = AnonymousTypeFactory.Build()
+            .AddPropertyIfNotNull("payee", createItem.Payee)
+            .AddPropertyIfNotNull("amount", createItem.Amount)
+            .AddPropertyIfNotNull("date", createItem.Date.ToFormattedString())
+            .AddPropertyIfNotNull("is_transfer", createItem.IsTransfer)
+            .AddPropertyIfNotNull("labels", createItem.Labels.Any() ? string.Join(",", createItem.Labels) : null)
+            .AddPropertyIfNotNull("category_id", createItem.CategoryId)
+            .AddPropertyIfNotNull("note", createItem.Note)
+            .AddPropertyIfNotNull("memo", createItem.Memo)
+            .AddPropertyIfNotNull("cheque_number", createItem.CheckNumber)
+            .AddPropertyIfNotNull("needs_review", createItem.NeedsReview)
+            .Create();
 
         return await ApiHelper.PostAsync<PocketSmithTransaction>(uri, request);
     }
@@ -46,6 +50,7 @@ public class TransactionService : ServiceBase<PocketSmithTransaction, int>, ITra
             .AddRouteFromModel(typeof(PocketSmithTransaction))
             .AddRoute(id.ToString())
             .GetUriAndReset();
+
         await ApiHelper.DeleteAsync(uri);
     }
 
@@ -70,28 +75,20 @@ public class TransactionService : ServiceBase<PocketSmithTransaction, int>, ITra
         }
 
         var results = new PocketSmithTransactionSummary();
+        var apiResults = await ApiHelper.GetPagedAsync<PocketSmithTransaction>(uriBuilder.GetUriAndReset());
 
-        var httpResponse = await ApiHelper.HttpClient.GetAsync(uriBuilder.GetUriAndReset());
-        var contentResponseString = await httpResponse.Content.ReadAsStringAsync();
-        if (!httpResponse.IsSuccessStatusCode)
-        {
-            throw new RestApiException(uriBuilder.Uri.AbsoluteUri, httpResponse.StatusCode, contentResponseString);
-        }
-        
-        results.Transactions = JsonSerializer.Deserialize<List<PocketSmithTransaction>>(contentResponseString) ?? new List<PocketSmithTransaction>();
-
-        results.TotalPages = getTotalPages(httpResponse.Headers);
-        results.PageNumber = getCurrentPage(httpResponse.Headers);
-
+        results.TotalPages = apiResults.TotalPages;
+        results.PageNumber = apiResults.CurrentPage;
+        results.Transactions = apiResults.Results;
         return results;
     }
 
-    public virtual async Task<PocketSmithTransaction> GetByIdAsync(int id)
+    public new virtual async Task<PocketSmithTransaction> GetByIdAsync(int id)
     {
         return await base.GetByIdAsync(id);
     }
 
-    public virtual async Task<PocketSmithTransactionSummary> GetAllByCategoryAsync(int categoryId, int? pageNumber = null, PocketSmithTransactionSearch? searchParameters = null)
+    public virtual async Task<PocketSmithTransactionSummary> GetAllByCategoryIdAsync(int categoryId, int? pageNumber = null, PocketSmithTransactionSearch? searchParameters = null)
     {
         var uriBuilder = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithCategory))
@@ -112,19 +109,11 @@ public class TransactionService : ServiceBase<PocketSmithTransaction, int>, ITra
         }
 
         var results = new PocketSmithTransactionSummary();
+        var apiResults = await ApiHelper.GetPagedAsync<PocketSmithTransaction>(uriBuilder.GetUriAndReset());
 
-        var httpResponse = await ApiHelper.HttpClient.GetAsync(uriBuilder.GetUriAndReset());
-        var contentResponseString = await httpResponse.Content.ReadAsStringAsync();
-        if (!httpResponse.IsSuccessStatusCode)
-        {
-            throw new RestApiException(uriBuilder.Uri.AbsoluteUri, httpResponse.StatusCode, contentResponseString);
-        }
-
-        results.Transactions = JsonSerializer.Deserialize<List<PocketSmithTransaction>>(contentResponseString) ?? new List<PocketSmithTransaction>();
-
-        results.TotalPages = getTotalPages(httpResponse.Headers);
-        results.PageNumber = getCurrentPage(httpResponse.Headers);
-
+        results.TotalPages = apiResults.TotalPages;
+        results.PageNumber = apiResults.CurrentPage;
+        results.Transactions = apiResults.Results;
         return results;
     }
 
@@ -149,25 +138,19 @@ public class TransactionService : ServiceBase<PocketSmithTransaction, int>, ITra
         }
 
         var results = new PocketSmithTransactionSummary();
+        var apiResults = await ApiHelper.GetPagedAsync<PocketSmithTransaction>(uriBuilder.GetUriAndReset());
 
-        var httpResponse = await ApiHelper.HttpClient.GetAsync(uriBuilder.GetUriAndReset());
-        var contentResponseString = await httpResponse.Content.ReadAsStringAsync();
-        if (!httpResponse.IsSuccessStatusCode)
-        {
-            throw new RestApiException(uriBuilder.Uri.AbsoluteUri, httpResponse.StatusCode, contentResponseString);
-        }
-
-        results.Transactions = JsonSerializer.Deserialize<List<PocketSmithTransaction>>(contentResponseString) ?? new List<PocketSmithTransaction>();
-
-        results.TotalPages = getTotalPages(httpResponse.Headers);
-        results.PageNumber = getCurrentPage(httpResponse.Headers);
+        results.TotalPages = apiResults.TotalPages;
+        results.PageNumber = apiResults.CurrentPage;
+        results.Transactions = apiResults.Results;
 
         return results;
     }
 
     public virtual async Task<PocketSmithTransactionSummary> GetAllAsync(int? pageNumber = null, PocketSmithTransactionSearch? searchParameters = null)
     {
-        var uriBuilder = UriBuilder.AddRouteFromModel(typeof(PocketSmithUser))
+        var uriBuilder = UriBuilder
+            .AddRouteFromModel(typeof(PocketSmithUser))
             .AddRoute(UserId.ToString())
             .AddRouteFromModel(typeof(PocketSmithTransaction))
             .AddQuery("page", pageNumber.ToString());
@@ -183,72 +166,44 @@ public class TransactionService : ServiceBase<PocketSmithTransaction, int>, ITra
                 .AddQuery("search", searchParameters.Search)
                 .AddQuery("per_page", searchParameters.TransactionsPerPage.ToString());
         }
-        
+
         var results = new PocketSmithTransactionSummary();
+        var apiResults = await ApiHelper.GetPagedAsync<PocketSmithTransaction>(uriBuilder.GetUriAndReset());
 
-        var httpResponse = await ApiHelper.HttpClient.GetAsync(uriBuilder.GetUriAndReset());
-        var contentResponseString = await httpResponse.Content.ReadAsStringAsync();
-        if (!httpResponse.IsSuccessStatusCode)
-        {
-            throw new RestApiException(uriBuilder.Uri.AbsoluteUri, httpResponse.StatusCode, contentResponseString);
-        }
-
-        results.Transactions = JsonSerializer.Deserialize<List<PocketSmithTransaction>>(contentResponseString) ?? new List<PocketSmithTransaction>();
-
-        results.TotalPages = getTotalPages(httpResponse.Headers);
-        results.PageNumber = getCurrentPage(httpResponse.Headers);
+        results.TotalPages = apiResults.TotalPages;
+        results.PageNumber = apiResults.CurrentPage;
+        results.Transactions = apiResults.Results;
 
         return results;
     }
 
     public virtual async Task<PocketSmithTransaction> UpdateAsync(UpdatePocketSmithTransaction updateItem, int id)
     {
+        if (id < 1)
+        {
+            throw new PocketSmithValidationException($"Argument {nameof(id)} is invalid. Must be greater than 0.");
+        }
+
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithTransaction))
             .AddRoute(id.ToString())
             .GetUriAndReset();
 
-        var request = new
-        {
-            memo = updateItem.Memo,
-            cheque_number = updateItem.CheckNumber,
-            payee = updateItem.Payee,
-            amount = updateItem.Amount,
-            date = updateItem.Date.ToFormattedString(),
-            is_transfer = updateItem.IsTransfer,
-            category_id = updateItem.CategoryId,
-            note = updateItem.Note,
-            needs_review = updateItem.NeedsReview,
-            labels = string.Join(",", updateItem.Labels)
-        };
+        var request = AnonymousTypeFactory
+            .Build()
+            .AddPropertyIfNotNull("memo", updateItem.Memo)
+            .AddPropertyIfNotNull("cheque_number", updateItem.CheckNumber, true)
+            .AddPropertyIfNotNull("payee", updateItem.Payee)
+            .AddPropertyIfNotNull("amount", updateItem.Amount)
+            .AddPropertyIfNotNull("date", updateItem.Date.ToFormattedString())
+            .AddPropertyIfNotNull("is_transfer", updateItem.IsTransfer)
+            .AddPropertyIfNotNull("category_id", updateItem.CategoryId)
+            .AddPropertyIfNotNull("note", updateItem.Note)
+            .AddPropertyIfNotNull("needs_review", updateItem.NeedsReview)
+            .AddPropertyIfNotNull("labels", updateItem.Labels.Any() ? string.Join(",", updateItem.Labels) : null)
+            .Create();
 
         var response = await ApiHelper.PutAsync<PocketSmithTransaction>(uri, request);
         return response;
-    }
-
-    private int getTotalPages(HttpResponseHeaders headers)
-    {
-        var totalRecords = int.Parse(headers.GetValues("total").First());
-        var perPage = int.Parse(headers.GetValues("per-page").First());
-        var results = totalRecords / perPage;
-        return results == 0 ? 1 : results;
-        
-    }
-
-    private int getCurrentPage(HttpResponseHeaders headers)
-    {
-        var pageLinks = headers.GetValues("link").First();
-        var nextPageLink = Regex.Match(pageLinks, "(?<=<)[^<]+(?=>;\\srel=\\\"next\\\")").Value;
-
-        int results;
-        if (string.IsNullOrEmpty(nextPageLink))
-        {
-            results = 1;
-        }
-        else
-        {
-            results = int.Parse(Regex.Match(nextPageLink, "(?<=<)[^<]+(?=>;\\srel=\\\"next\\\")").Value) - 1;
-        }
-        return results;
     }
 }

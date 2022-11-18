@@ -1,16 +1,17 @@
-﻿using PocketSmith.NET.Extensions;
+﻿using PocketSmith.NET.ApiHelper;
+using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 using PocketSmith.NET.Services.Institutions.Models;
 
 namespace PocketSmith.NET.Services.Institutions;
 
-public class InstitutionService : ServiceBase<PocketSmithInstitution, int>, IInstitutionService
+public class InstitutionService : ServiceBase<PocketSmithInstitution, int>, IInstitutionService, IPocketSmithService
 {
-    public InstitutionService(int userId, string apiKey) : base(userId, apiKey)
+    public InstitutionService(IApiHelper apiHelper, int userId, string apiKey) : base(apiHelper, userId, apiKey)
     {
     }
 
-    public virtual async Task<IEnumerable<PocketSmithInstitution>> GetAllAsync()
+    public new virtual async Task<IEnumerable<PocketSmithInstitution>> GetAllAsync()
     {
         return await base.GetAllAsync();
     }
@@ -42,7 +43,7 @@ public class InstitutionService : ServiceBase<PocketSmithInstitution, int>, IIns
         await ApiHelper.DeleteAsync(uri);
     }
 
-    public virtual async Task<PocketSmithInstitution> GetByIdAsync(int id)
+    public new virtual async Task<PocketSmithInstitution> GetByIdAsync(int id)
     {
         return await base.GetByIdAsync(id);
     }

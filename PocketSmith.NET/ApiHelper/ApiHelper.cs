@@ -1,15 +1,19 @@
-﻿using PocketSmith.NET.Exceptions;
-using System.Net.Http.Json;
+﻿using System.Net;
+using PocketSmith.NET.Exceptions;
 using System.Text.Json;
+using PocketSmith.NET.Models;
+using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
 
-namespace PocketSmith.NET.Extensions;
+namespace PocketSmith.NET.ApiHelper;
 
-public class ApiHelper
+public class ApiHelper : IApiHelper
 {
-    public static HttpClient HttpClient = new HttpClient();
+    public HttpClient HttpClient { get; }
 
-    public ApiHelper(string apiKey)
+    public ApiHelper(HttpClient httpClient, string apiKey)
     {
+        HttpClient = httpClient;
         HttpClient.DefaultRequestHeaders.Add("X-Developer-Key", apiKey);
     }
 
@@ -66,5 +70,53 @@ public class ApiHelper
 
         var resultObject = JsonSerializer.Deserialize<TApiModel>(contentResponseString);
         return resultObject;
+    }
+
+    public async Task<PocketSmithPagedQueryResult<TApiModel>> GetPagedAsync<TApiModel>(Uri uri)
+    {
+        var results = new PocketSmithPagedQueryResult<TApiModel>();
+
+        var httpResponse = await HttpClient.GetAsync(uri);
+
+        var contentResponseString = await httpResponse.Content.ReadAsStringAsync();
+
+        if (!httpResponse.IsSuccessStatusCode)
+        {
+            throw new RestApiException(uri.AbsolutePath, httpResponse.StatusCode, contentResponseString);
+        }
+
+
+        results.CurrentPage = getCurrentPage(httpResponse.Headers);
+        results.TotalPages = getTotalPages(httpResponse.Headers);
+        results.Results = JsonSerializer.Deserialize<List<TApiModel>>(contentResponseString);
+
+        return results;
+    }
+
+    private int getTotalPages(HttpResponseHeaders headers)
+    {
+        var totalRecords = int.Parse(headers.GetValues("total").First());
+        var perPage = int.Parse(headers.GetValues("per-page").First());
+        var results = totalRecords / perPage;
+        return results == 0 ? 1 : results;
+
+    }
+
+    private int getCurrentPage(HttpResponseHeaders headers)
+    {
+        var pageLinks = headers.GetValues("link").First();
+        var nextPageLink = Regex.Match(pageLinks, "(?<=<)[^<]+(?=>;\\srel=\\\"next\\\")").Value;
+
+        int results;
+        if (string.IsNullOrEmpty(nextPageLink))
+        {
+            results = 1;
+        }
+        else
+        {
+            var nextPageString = Regex.Match(nextPageLink, @"(?<=page=)\d+").Value;
+            results = int.Parse(nextPageString) - 1;
+        }
+        return results;
     }
 }

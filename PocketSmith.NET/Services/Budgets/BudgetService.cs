@@ -1,12 +1,13 @@
-﻿using PocketSmith.NET.Extensions;
+﻿using PocketSmith.NET.ApiHelper;
+using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 using PocketSmith.NET.Services.Budgets.Models;
 
 namespace PocketSmith.NET.Services.Budgets;
 
-public class BudgetService : ServiceBase<PocketSmithBudget, int>, IBudgetService
+public class BudgetService : ServiceBase<PocketSmithBudget, int>, IBudgetService, IPocketSmithService
 {
-    public BudgetService(int userId, string apiKey) : base(userId, apiKey)
+    public BudgetService(IApiHelper apiHelper, int userId, string apiKey) : base(apiHelper, userId, apiKey)
     {
     }
 

@@ -1,15 +1,16 @@
-﻿using PocketSmith.NET.Extensions;
+﻿using PocketSmith.NET.ApiHelper;
+using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 
 namespace PocketSmith.NET.Services.TimeZones;
 
-public class TimeZoneService : ServiceBase<PocketSmithTimeZone, int>, ITimeZoneService
+public class TimeZoneService : ServiceBase<PocketSmithTimeZone, int>, ITimeZoneService, IPocketSmithService
 {
-    public TimeZoneService(int userId, string apiKey) : base(userId, apiKey)
+    public TimeZoneService(IApiHelper apiHelper, int userId, string apiKey) : base(apiHelper, userId, apiKey)
     {
     }
 
-    public virtual async Task<IEnumerable<PocketSmithTimeZone>> GetAllAsync()
+    public new virtual async Task<IEnumerable<PocketSmithTimeZone>> GetAllAsync()
     {
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithTimeZone))

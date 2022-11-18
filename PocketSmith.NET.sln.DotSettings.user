@@ -1,0 +1,22 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=02a8f0c1_002D7b34_002D4191_002D9904_002Dac10016ce45a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="GetAuthorizedUserAsync_Success #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;MSTest::CEBD224A-7C8B-4879-9202-E2A8F0A3FAA3::net6.0::PocketSmith.NET.UnitTests.UriTests.UserServiceTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::CEBD224A-7C8B-4879-9202-E2A8F0A3FAA3::net6.0::PocketSmith.NET.UnitTests.UriTests.TransactionServiceTests.GetByIdAsync_Success&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::CEBD224A-7C8B-4879-9202-E2A8F0A3FAA3::net6.0::PocketSmith.NET.UnitTests.UriTests.TransactionServiceTests.GetAllAsync_Success&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::CEBD224A-7C8B-4879-9202-E2A8F0A3FAA3::net6.0::PocketSmith.NET.UnitTests.UriTests.TransactionServiceTests.GetAllByAccountIdAsync_Success&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::CEBD224A-7C8B-4879-9202-E2A8F0A3FAA3::net6.0::PocketSmith.NET.UnitTests.UriTests.TransactionServiceTests.CreateAsync_Success&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::CEBD224A-7C8B-4879-9202-E2A8F0A3FAA3::net6.0::PocketSmith.NET.UnitTests.UriTests.TransactionServiceTests.GetAllByCategoryIdAsync_Success&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::CEBD224A-7C8B-4879-9202-E2A8F0A3FAA3::net6.0::PocketSmith.NET.UnitTests.UriTests.TransactionServiceTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::CEBD224A-7C8B-4879-9202-E2A8F0A3FAA3::net6.0::PocketSmith.NET.UnitTests.UriTests.TransactionAccountServiceTests.GetByIdAsync_Success&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::CEBD224A-7C8B-4879-9202-E2A8F0A3FAA3::net6.0::PocketSmith.NET.UnitTests.UriTests.TransactionAccountServiceTests.GetAllAsync_Success&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::CEBD224A-7C8B-4879-9202-E2A8F0A3FAA3::net6.0::PocketSmith.NET.UnitTests.UriTests.TransactionAccountServiceTests.UpdateAsync_Success&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::CEBD224A-7C8B-4879-9202-E2A8F0A3FAA3::net6.0::PocketSmith.NET.UnitTests.UriTests.TransactionAccountServiceTests.UpdateAsync_Failed_InvalidId&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::CEBD224A-7C8B-4879-9202-E2A8F0A3FAA3::net6.0::PocketSmith.NET.UnitTests.UriTests.TimeZoneServiceTests.GetAllAsync_Success&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=521decf9_002D63a8_002D4912_002Db3ef_002Dd387a5b75e23/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetAuthorizedUserAsync_Success" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;MSTest::CEBD224A-7C8B-4879-9202-E2A8F0A3FAA3::net6.0::PocketSmith.NET.UnitTests.UriTests.UserServiceUriTests.GetAuthorizedUserAsync_Success&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
