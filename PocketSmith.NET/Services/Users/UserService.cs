@@ -1,12 +1,17 @@
-﻿using PocketSmith.NET.Extensions;
+﻿using Microsoft.Extensions.Configuration;
+using PocketSmith.NET.ApiHelper;
+using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 using PocketSmith.NET.Services.Users.Models;
 
 namespace PocketSmith.NET.Services.Users;
 
-public class UserService : ServiceBase<PocketSmithUser, int>, IUserService
+public class UserService : ServiceBase<PocketSmithUser, int>, IUserService, IPocketSmithService
 {
-    public UserService(int userId, string apiKey) : base(userId, apiKey )
+    public UserService(IApiHelper apiHelper, IConfiguration configuration) : base(apiHelper, configuration)
+    {
+    }
+    public UserService(IApiHelper apiHelper, int userId, string apiKey) : base(apiHelper, userId, apiKey )
     {
     }
 
@@ -17,7 +22,8 @@ public class UserService : ServiceBase<PocketSmithUser, int>, IUserService
 
     public virtual async Task<PocketSmithUser> GetAuthorizedUserAsync()
     {
-        var results = await ApiHelper.GetAsync<PocketSmithUser>(UriBuilder.AddRoute("me").GetUriAndReset());
+        var uri = UriBuilder.AddRoute("me").GetUriAndReset();
+        var results = await ApiHelper.GetAsync<PocketSmithUser>(uri);
         return results;
     }
 

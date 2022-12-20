@@ -1,17 +1,30 @@
-﻿using PocketSmith.NET.Extensions;
+﻿using FluentValidation;
+using Microsoft.Extensions.Configuration;
+using PocketSmith.NET.ApiHelper;
+using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 using PocketSmith.NET.Services.Events.Models;
+using PocketSmith.NET.Services.Events.Validators;
 
 namespace PocketSmith.NET.Services.Events;
 
-public class EventService : ServiceBase<PocketSmithEvent, string>, IEventService
+public class EventService : ServiceBase<PocketSmithEvent, string>, IEventService, IPocketSmithService
 {
-    public EventService(int userId, string apiKey) : base(userId, apiKey)
+    private readonly CreateEventValidator _createValidator;
+
+    public EventService(IApiHelper apiHelper, IConfiguration configuration, CreateEventValidator createValidator) : base(apiHelper, configuration)
     {
+        _createValidator = createValidator;
+    }
+    public EventService(IApiHelper apiHelper, int userId, string apiKey, CreateEventValidator createValidator) : base(apiHelper, userId, apiKey)
+    {
+        _createValidator = createValidator;
     }
 
     public virtual async Task<PocketSmithEvent> CreateAsync(CreatePocketSmithEvent createItem)
     {
+        await _createValidator.ValidateAndThrowAsync(createItem);
+
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithAccountScenario))
             .AddRoute(createItem.ScenarioId.ToString())
@@ -51,7 +64,7 @@ public class EventService : ServiceBase<PocketSmithEvent, string>, IEventService
             .AddQuery("end_date", endDate.ToFormattedString())
             .GetUriAndReset();
 
-        var response = await ApiHelper.GetAsync<IEnumerable<PocketSmithEvent>>(uri);
+        var response = await ApiHelper.GetAsync<List<PocketSmithEvent>>(uri);
         return response;
     }
 
@@ -64,7 +77,7 @@ public class EventService : ServiceBase<PocketSmithEvent, string>, IEventService
             .AddQuery("end_date", endDate.ToFormattedString())
             .GetUriAndReset();
 
-        var response = await ApiHelper.GetAsync<IEnumerable<PocketSmithEvent>>(uri);
+        var response = await ApiHelper.GetAsync<List<PocketSmithEvent>>(uri);
         return response;
     }
 
@@ -93,7 +106,7 @@ public class EventService : ServiceBase<PocketSmithEvent, string>, IEventService
         return response;
     }
 
-    public virtual async Task<PocketSmithEvent> GetByIdAsync(string id)
+    public new virtual async Task<PocketSmithEvent> GetByIdAsync(string id)
     {
         return await base.GetByIdAsync(id);
     }

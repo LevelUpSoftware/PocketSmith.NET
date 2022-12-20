@@ -40,6 +40,11 @@ public static class UriBuilderExtensions
             throw new ArgumentNullException(nameof(value), "Query parameter value cannot be null or empty.");
         }
 
+        if (!string.IsNullOrEmpty(value))
+        {
+            value = value.Replace(",", "%2C");
+        }
+
         if (string.IsNullOrEmpty(builder.Query))
         {
             builder.Query += $"{key}={value}";
@@ -70,6 +75,5 @@ public static class UriBuilderExtensions
         builder.Path = "v2/";
 
         return uri;
-
     }
 }

@@ -1,17 +1,30 @@
-﻿using PocketSmith.NET.Extensions;
+﻿using FluentValidation;
+using Microsoft.Extensions.Configuration;
+using PocketSmith.NET.ApiHelper;
+using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 using PocketSmith.NET.Services.Categories.Models;
 using PocketSmith.NET.Services.Categories.Options;
+using PocketSmith.NET.Services.Categories.Validators;
 
 namespace PocketSmith.NET.Services.Categories;
 
-public class CategoryService : ServiceBase<PocketSmithCategory, int>, ICategoryService
+public class CategoryService : ServiceBase<PocketSmithCategory, int>, ICategoryService, IPocketSmithService
 {
-    public CategoryService(int userId, string apiKey) : base(userId, apiKey)
+    private readonly CreateCategoryValidator _createValidator;
+
+    public CategoryService(IApiHelper apiHelper, IConfiguration configuration, CreateCategoryValidator createValidator) : base(apiHelper, configuration)
     {
+        _createValidator = createValidator;
+    }
+    public CategoryService(IApiHelper apiHelper, int userId, string apiKey, CreateCategoryValidator createValidator) : base(apiHelper, userId, apiKey)
+    {
+        _createValidator = createValidator;
     }
     public virtual async Task<PocketSmithCategory> CreateAsync(CreatePocketSmithCategory createItem)
     {
+        await _createValidator.ValidateAndThrowAsync(createItem);
+        
         var uri = UriBuilder.AddRouteFromModel(typeof(PocketSmithUser))
             .AddRoute(UserId.ToString())
             .AddRouteFromModel(typeof(PocketSmithCategory))
