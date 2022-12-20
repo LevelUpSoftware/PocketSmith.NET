@@ -1,4 +1,6 @@
-﻿using PocketSmith.NET.ApiHelper;
+﻿using Microsoft.Extensions.Configuration;
+using PocketSmith.NET.ApiHelper;
+using PocketSmith.NET.Exceptions;
 using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 
@@ -6,6 +8,9 @@ namespace PocketSmith.NET.Services.CategoryRules;
 
 public class CategoryRuleService : ServiceBase<PocketSmithCategoryRule, string>, ICategoryRuleService, IPocketSmithService
 {
+    public CategoryRuleService(IApiHelper apiHelper, IConfiguration configuration) : base(apiHelper, configuration)
+    {
+    }
     public CategoryRuleService(IApiHelper apiHelper, int userId, string apiKey) : base(apiHelper, userId, apiKey)
     {
     }
@@ -13,7 +18,12 @@ public class CategoryRuleService : ServiceBase<PocketSmithCategoryRule, string>,
     {
         if (string.IsNullOrEmpty(payeeMatchString))
         {
-            throw new ArgumentNullException(nameof(payeeMatchString));
+            throw new PocketSmithValidationException($"Argument {nameof(payeeMatchString)} is invalid.");
+        }
+
+        if (categoryId < 1)
+        {
+            throw new PocketSmithValidationException($"Argument {nameof(categoryId)} is invalid.");
         }
 
         var uri = UriBuilder

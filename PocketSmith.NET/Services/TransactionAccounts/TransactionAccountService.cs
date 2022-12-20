@@ -1,4 +1,5 @@
-﻿using PocketSmith.NET.ApiHelper;
+﻿using Microsoft.Extensions.Configuration;
+using PocketSmith.NET.ApiHelper;
 using PocketSmith.NET.Exceptions;
 using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Factories;
@@ -9,6 +10,10 @@ namespace PocketSmith.NET.Services.TransactionAccounts;
 
 public class TransactionAccountService : ServiceBase<PocketSmithTransactionAccount, int>, ITransactionAccountService, IPocketSmithService
 {
+    public TransactionAccountService(IApiHelper apiHelper, IConfiguration configuration) : base(apiHelper,
+        configuration)
+    {
+    }
     public TransactionAccountService(IApiHelper apiHelper, int userId, string apiKey) : base(apiHelper, userId, apiKey)
     {
     }

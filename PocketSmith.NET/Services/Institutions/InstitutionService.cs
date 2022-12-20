@@ -1,14 +1,25 @@
-﻿using PocketSmith.NET.ApiHelper;
+﻿using FluentValidation;
+using Microsoft.Extensions.Configuration;
+using PocketSmith.NET.ApiHelper;
 using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 using PocketSmith.NET.Services.Institutions.Models;
+using PocketSmith.NET.Services.Institutions.Validators;
 
 namespace PocketSmith.NET.Services.Institutions;
 
 public class InstitutionService : ServiceBase<PocketSmithInstitution, int>, IInstitutionService, IPocketSmithService
 {
-    public InstitutionService(IApiHelper apiHelper, int userId, string apiKey) : base(apiHelper, userId, apiKey)
+    private readonly CreateInstitutionValidator _createValidator;
+
+    public InstitutionService(IApiHelper apiHelper, IConfiguration configuration,
+        CreateInstitutionValidator createValidator) : base(apiHelper, configuration)
     {
+        _createValidator = createValidator;
+    }
+    public InstitutionService(IApiHelper apiHelper, int userId, string apiKey, CreateInstitutionValidator createValidator) : base(apiHelper, userId, apiKey)
+    {
+        _createValidator = createValidator;
     }
 
     public new virtual async Task<IEnumerable<PocketSmithInstitution>> GetAllAsync()
@@ -18,6 +29,8 @@ public class InstitutionService : ServiceBase<PocketSmithInstitution, int>, IIns
 
     public virtual async Task<PocketSmithInstitution> CreateAsync(CreatePocketSmithInstitution createItem)
     {
+        await _createValidator.ValidateAndThrowAsync(createItem);
+
         var uri = UriBuilder.AddRouteFromModel(typeof(PocketSmithUser))
             .AddRoute(UserId.ToString())
             .AddRouteFromModel(typeof(PocketSmithInstitution))

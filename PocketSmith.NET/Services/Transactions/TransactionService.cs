@@ -1,5 +1,5 @@
-﻿using System.ComponentModel;
-using FluentValidation;
+﻿using FluentValidation;
+using Microsoft.Extensions.Configuration;
 using PocketSmith.NET.ApiHelper;
 using PocketSmith.NET.Exceptions;
 using PocketSmith.NET.Extensions;
@@ -13,6 +13,12 @@ namespace PocketSmith.NET.Services.Transactions;
 public class TransactionService : ServiceBase<PocketSmithTransaction, int>, ITransactionService, IPocketSmithService
 {
     private readonly CreateTransactionValidator _createValidator;
+
+    public TransactionService(IApiHelper apiHelper, IConfiguration configuration,
+        CreateTransactionValidator createValidator) : base(apiHelper, configuration)
+    {
+        _createValidator = createValidator;
+    }
     public TransactionService(IApiHelper apiHelper, int userId, string apiKey, CreateTransactionValidator createValidator) : base(apiHelper, userId, apiKey)
     {
         _createValidator = createValidator;

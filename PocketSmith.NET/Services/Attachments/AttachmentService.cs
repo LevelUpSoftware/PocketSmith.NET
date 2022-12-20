@@ -1,14 +1,24 @@
-﻿using PocketSmith.NET.ApiHelper;
+﻿using FluentValidation;
+using Microsoft.Extensions.Configuration;
+using PocketSmith.NET.ApiHelper;
 using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 using PocketSmith.NET.Services.Attachments.Models;
+using PocketSmith.NET.Services.Attachments.Validators;
 
 namespace PocketSmith.NET.Services.Attachments;
 
 public class AttachmentService : ServiceBase<PocketSmithAttachment, int>, IAttachmentService, IPocketSmithService
 {
-    public AttachmentService(IApiHelper apiHelper, int userId, string apiKey) : base(apiHelper, userId, apiKey)
+    private readonly CreateAttachmentValidator _createValidator;
+
+    public AttachmentService(IApiHelper apiHelper, IConfiguration configuration, CreateAttachmentValidator createValidator) : base(apiHelper, configuration)
     {
+        _createValidator = createValidator;
+    }
+    public AttachmentService(IApiHelper apiHelper, int userId, string apiKey, CreateAttachmentValidator createValidator) : base(apiHelper, userId, apiKey)
+    {
+        _createValidator = createValidator;
     }
     public virtual async Task<PocketSmithAttachment> AssignToTransactionAsync(int transactionId, int attachmentId)
     {
@@ -29,6 +39,8 @@ public class AttachmentService : ServiceBase<PocketSmithAttachment, int>, IAttac
 
     public virtual async Task<PocketSmithAttachment> CreateAsync(CreatePocketSmithAttachment createItem)
     {
+        await _createValidator.ValidateAndThrowAsync(createItem);
+
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithUser))
             .AddRoute(UserId.ToString())
@@ -97,8 +109,13 @@ public class AttachmentService : ServiceBase<PocketSmithAttachment, int>, IAttac
         return await base.GetByIdAsync(id);
     }
 
-    public virtual async Task<PocketSmithAttachment> UpdateAsync(PocketSmithAttachment updateItem, int id)
+    public virtual async Task<PocketSmithAttachment> UpdateAsync(string fileTitle, int id)
     {
+        if (string.IsNullOrEmpty(fileTitle))
+        {
+            throw new ArgumentNullException(nameof(fileTitle));
+        }
+
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithAttachment))
             .AddRoute(id.ToString())
@@ -106,7 +123,7 @@ public class AttachmentService : ServiceBase<PocketSmithAttachment, int>, IAttac
 
         var request = new
         {
-            title = updateItem.Title
+            title = fileTitle
         };
 
         var response = await ApiHelper.PutAsync<PocketSmithAttachment>(uri, request);

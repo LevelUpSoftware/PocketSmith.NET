@@ -1,28 +1,26 @@
 ﻿using Moq;
 using PocketSmith.NET.ApiHelper;
-using PocketSmith.NET.Models;
-using PocketSmith.NET.Services.TimeZones;
+using PocketSmith.NET.Services.Labels;
 
 namespace PocketSmith.NET.UnitTests.UriTests;
 
 [TestClass]
-public class TimeZoneServiceTests
+public class LabelServiceTests
 {
-    private ITimeZoneService _timeZoneService;
+    private ILabelService _labelService;
     private string _currentUri;
 
     [TestInitialize]
-    public void Init()
+    public void Initialize()
     {
-        _timeZoneService = new TimeZoneService(setupIApiHelper(), 1, "apiKey");
+        _labelService = new LabelService(setupIApiHelper(), 1, "apiKey");
     }
 
     [TestMethod]
     public async Task GetAllAsync_Success()
     {
-        var expectedUri = "https://api.pocketsmith.com/v2/time_zones";
-
-        _ = await _timeZoneService.GetAllAsync();
+        var expectedUri = "https://api.pocketsmith.com/v2/users/1/labels";
+        _ = await _labelService.GetAllAsync();
 
         Assert.IsTrue(_currentUri == expectedUri);
     }
@@ -31,13 +29,16 @@ public class TimeZoneServiceTests
     {
         var moqApiHelper = new Mock<IApiHelper>();
 
-        moqApiHelper.Setup(x => x.GetAsync<List<PocketSmithTimeZone>>(It.IsAny<Uri>())).ReturnsAsync(
+       
+        moqApiHelper.Setup(x => x.GetAsync<List<string>>(It.IsAny<Uri>())).ReturnsAsync(
             (Uri uri) =>
             {
                 _currentUri = uri.ToString();
                 return null;
             });
-        
+
+      
         return moqApiHelper.Object;
     }
+
 }

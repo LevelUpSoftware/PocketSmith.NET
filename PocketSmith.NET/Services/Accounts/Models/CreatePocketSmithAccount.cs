@@ -6,7 +6,6 @@ namespace PocketSmith.NET.Services.Accounts.Models;
 
 public class CreatePocketSmithAccount
 {
-    public int UserId { get; set; }
 
     public int InstitutionId { get; set; }
 

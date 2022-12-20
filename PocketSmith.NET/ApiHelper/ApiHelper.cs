@@ -10,14 +10,14 @@ namespace PocketSmith.NET.ApiHelper;
 public class ApiHelper : IApiHelper
 {
     public HttpClient HttpClient { get; }
+    public bool ApiKeySet { get; private set; }
 
-    public ApiHelper(HttpClient httpClient, string apiKey)
+    public ApiHelper(HttpClient httpClient)
     {
         HttpClient = httpClient;
-        HttpClient.DefaultRequestHeaders.Add("X-Developer-Key", apiKey);
     }
 
-    public async Task<TApiModel> PostAsync<TApiModel>(Uri uri, object requestBody)
+    public async Task<TApiModel?> PostAsync<TApiModel>(Uri uri, object requestBody)
     {
         var httpResponse = await HttpClient.PostAsJsonAsync(uri, requestBody);
         var contentResponseString = await httpResponse.Content.ReadAsStringAsync();
@@ -28,10 +28,10 @@ public class ApiHelper : IApiHelper
         }
 
         var resultObject = JsonSerializer.Deserialize<TApiModel>(contentResponseString);
-        return resultObject;
+        return resultObject!;
     }
 
-    public async Task<TApiModel> PutAsync<TApiModel>(Uri uri, object requestBody)
+    public async Task<TApiModel?> PutAsync<TApiModel>(Uri uri, object requestBody)
     {
         var httpResponse = await HttpClient.PutAsJsonAsync(uri, requestBody);
         var contentResponseString = await httpResponse.Content.ReadAsStringAsync();
@@ -42,7 +42,7 @@ public class ApiHelper : IApiHelper
         }
 
         var resultObject = JsonSerializer.Deserialize<TApiModel>(contentResponseString);
-        return resultObject;
+        return resultObject!;
     }
 
     public async Task DeleteAsync(Uri uri)
@@ -56,7 +56,7 @@ public class ApiHelper : IApiHelper
         }
     }
 
-    public async Task<TApiModel> GetAsync<TApiModel>(Uri uri)
+    public async Task<TApiModel?> GetAsync<TApiModel>(Uri uri)
     {
         var httpResponse = await HttpClient.GetAsync(uri);
 
@@ -69,7 +69,7 @@ public class ApiHelper : IApiHelper
 
 
         var resultObject = JsonSerializer.Deserialize<TApiModel>(contentResponseString);
-        return resultObject;
+        return resultObject!;
     }
 
     public async Task<PocketSmithPagedQueryResult<TApiModel>> GetPagedAsync<TApiModel>(Uri uri)
@@ -88,9 +88,20 @@ public class ApiHelper : IApiHelper
 
         results.CurrentPage = getCurrentPage(httpResponse.Headers);
         results.TotalPages = getTotalPages(httpResponse.Headers);
-        results.Results = JsonSerializer.Deserialize<List<TApiModel>>(contentResponseString);
+        results.Results = JsonSerializer.Deserialize<List<TApiModel>>(contentResponseString) ?? new List<TApiModel>();
 
         return results;
+    }
+
+    public void SetApiKey(string apiKey)
+    {
+        if (string.IsNullOrEmpty(apiKey))
+        {
+            throw new ArgumentNullException(nameof(apiKey));
+        }
+
+        ApiKeySet = true;
+        HttpClient.DefaultRequestHeaders.Add("X-Developer-Key", apiKey);
     }
 
     private int getTotalPages(HttpResponseHeaders headers)

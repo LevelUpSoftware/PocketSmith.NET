@@ -18,10 +18,15 @@
     <Folder Include="Exceptions\" />
     <Folder Include="Constants\" />
     <Folder Include="Services\Accounts\Models\" />
+    <Folder Include="Services\Accounts\Validators\" />
+    <Folder Include="Services\Attachments\Validators\" />
     <Folder Include="Services\Budgets\Models\" />
     <Folder Include="Services\Categories\Models\" />
+    <Folder Include="Services\Categories\Validators\" />
     <Folder Include="Services\CategoryRules\" />
+    <Folder Include="Services\Events\Validators\" />
     <Folder Include="Services\Institutions\Models\" />
+    <Folder Include="Services\Institutions\Validators\" />
     <Folder Include="Services\Labels\" />
     <Folder Include="Services\Currencies\" />
     <Folder Include="Services\TimeZones\" />
@@ -34,6 +39,7 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.3.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
   </ItemGroup>

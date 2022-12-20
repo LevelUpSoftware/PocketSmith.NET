@@ -1,4 +1,5 @@
-﻿using PocketSmith.NET.ApiHelper;
+﻿using Microsoft.Extensions.Configuration;
+using PocketSmith.NET.ApiHelper;
 using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 using PocketSmith.NET.Services.Users.Models;
@@ -7,6 +8,9 @@ namespace PocketSmith.NET.Services.Users;
 
 public class UserService : ServiceBase<PocketSmithUser, int>, IUserService, IPocketSmithService
 {
+    public UserService(IApiHelper apiHelper, IConfiguration configuration) : base(apiHelper, configuration)
+    {
+    }
     public UserService(IApiHelper apiHelper, int userId, string apiKey) : base(apiHelper, userId, apiKey )
     {
     }

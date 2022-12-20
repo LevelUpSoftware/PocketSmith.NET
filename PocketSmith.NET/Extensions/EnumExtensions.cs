@@ -24,7 +24,7 @@ public static class EnumExtensions
                 "The specified enumerator does not contain any properties with the [Display()] attribute.");
         }
 
-        return ((DisplayAttribute)attributes.ElementAt(0)).Name;
+        return ((DisplayAttribute)attributes.ElementAt(0)).Name!;
     }
 
     public static bool TryParse(string inputString, out PocketSmithAccountType? accountType)
@@ -39,7 +39,7 @@ public static class EnumExtensions
                 continue;
             }
 
-            string attributeValue = ((DisplayAttribute)selectedAttribute!).Name;
+            string? attributeValue = ((DisplayAttribute)selectedAttribute!).Name;
 
             if (attributeValue == inputString)
             {
