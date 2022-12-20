@@ -7,11 +7,11 @@ namespace PocketSmith.NET.Models;
 [HttpRoute("budget_summary")]
 public class PocketSmithBudgetEvent
 {
-    [JsonConverter(typeof(DateTimeToShortDateJsonConverter))]
+    [JsonConverter(typeof(DateOnlyToShortDateStringConverter))]
     [JsonPropertyName("start_date")]
     public DateOnly StartDate { get; set; }
 
-    [JsonConverter(typeof(DateTimeToShortDateJsonConverter))]
+    [JsonConverter(typeof(DateOnlyToShortDateStringConverter))]
     [JsonPropertyName("end_date")]
     public DateOnly EndDate { get; set; }
 

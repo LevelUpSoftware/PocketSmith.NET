@@ -1,21 +1,34 @@
-﻿using PocketSmith.NET.Extensions;
+﻿using FluentValidation;
+using Microsoft.Extensions.Configuration;
+using PocketSmith.NET.ApiHelper;
+using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 using PocketSmith.NET.Services.Categories.Models;
 using PocketSmith.NET.Services.Categories.Options;
+using PocketSmith.NET.Services.Categories.Validators;
 
 namespace PocketSmith.NET.Services.Categories;
 
-public class CategoryService : ServiceBase<PocketSmithCategory, int>, ICategoryService
+public class CategoryService : ServiceBase<PocketSmithCategory, int>, ICategoryService, IPocketSmithService
 {
-    public CategoryService(int userId, string apiKey) : base(userId, apiKey)
+    private readonly CreateCategoryValidator _createValidator;
+
+    public CategoryService(IApiHelper apiHelper, IConfiguration configuration, CreateCategoryValidator createValidator) : base(apiHelper, configuration)
     {
+        _createValidator = createValidator;
+    }
+    public CategoryService(IApiHelper apiHelper, int userId, string apiKey, CreateCategoryValidator createValidator) : base(apiHelper, userId, apiKey)
+    {
+        _createValidator = createValidator;
     }
     public virtual async Task<PocketSmithCategory> CreateAsync(CreatePocketSmithCategory createItem)
     {
+        await _createValidator.ValidateAndThrowAsync(createItem);
+        
         var uri = UriBuilder.AddRouteFromModel(typeof(PocketSmithUser))
             .AddRoute(UserId.ToString())
             .AddRouteFromModel(typeof(PocketSmithCategory))
-            .Uri;
+            .GetUriAndReset();
 
         var request = new
         {
@@ -32,12 +45,28 @@ public class CategoryService : ServiceBase<PocketSmithCategory, int>, ICategoryS
         return response;
     }
 
+    public virtual async Task<PocketSmithCategory> GetByIdAsync(int id)
+    {
+        return await base.GetByIdAsync(id);
+    }
+
+    public virtual async Task<IEnumerable<PocketSmithCategory>> GetAllAsync()
+    {
+        var uri = UriBuilder.AddRouteFromModel(typeof(PocketSmithUser))
+            .AddRoute(UserId.ToString())
+            .AddRouteFromModel(typeof(PocketSmithCategory))
+            .GetUriAndReset();
+
+        var response = await ApiHelper.GetAsync<List<PocketSmithCategory>>(uri);
+        return response;
+    }
+
     public virtual async Task DeleteAsync(int id)
     {
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithCategory))
             .AddRoute(id.ToString())
-            .Uri;
+            .GetUriAndReset();
 
         await ApiHelper.DeleteAsync(uri);
     }
@@ -46,7 +75,7 @@ public class CategoryService : ServiceBase<PocketSmithCategory, int>, ICategoryS
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithCategory))
             .AddRoute(id.ToString())
-            .Uri;
+            .GetUriAndReset();
 
         var request = new
         {
@@ -61,7 +90,6 @@ public class CategoryService : ServiceBase<PocketSmithCategory, int>, ICategoryS
 
         var response = await ApiHelper.PutAsync<PocketSmithCategory>(uri, request);
         return response;
-
     }
 
 

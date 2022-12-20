@@ -25,9 +25,9 @@ public class PocketSmithEvent
     [JsonPropertyName("currency_code")]
     public string CurrencyCode { get; set; }
     
-    [JsonConverter(typeof(DateTimeToShortDateJsonConverter))]
+    [JsonConverter(typeof(DateOnlyToShortDateStringConverter))]
     [JsonPropertyName("date")]
-    public DateTime Date { get; set; }
+    public DateOnly Date { get; set; }
 
     [JsonPropertyName("colour")]
     public string Colour { get; set; }

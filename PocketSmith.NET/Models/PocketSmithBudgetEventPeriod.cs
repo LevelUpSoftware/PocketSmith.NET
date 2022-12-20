@@ -5,16 +5,16 @@ namespace PocketSmith.NET.Models;
 
 public class PocketSmithBudgetEventPeriod
 {
-    [JsonConverter(typeof(DateTimeToShortDateJsonConverter))]
+    [JsonConverter(typeof(DateOnlyToShortDateStringConverter))]
     [JsonPropertyName("start_date")]
-    public DateTime StartDate { get; set; }
+    public DateOnly StartDate { get; set; }
 
-    [JsonConverter(typeof(DateTimeToShortDateJsonConverter))]
+    [JsonConverter(typeof(DateOnlyToShortDateStringConverter))]
     [JsonPropertyName("end_date")]
-    public DateTime EndDate { get; set; }
+    public DateOnly EndDate { get; set; }
 
     [JsonPropertyName("currency_code")]
-    public double CurrencyCode { get; set; }
+    public string CurrencyCode { get; set; }
 
     [JsonPropertyName("actual_amount")]
     public double ActualAmount { get; set; }

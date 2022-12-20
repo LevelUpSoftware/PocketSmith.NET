@@ -1,21 +1,40 @@
-﻿using PocketSmith.NET.Extensions;
+﻿using FluentValidation;
+using Microsoft.Extensions.Configuration;
+using PocketSmith.NET.ApiHelper;
+using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 using PocketSmith.NET.Services.Institutions.Models;
+using PocketSmith.NET.Services.Institutions.Validators;
 
 namespace PocketSmith.NET.Services.Institutions;
 
-public class InstitutionService : ServiceBase<PocketSmithInstitution, int>, IInstitutionService
+public class InstitutionService : ServiceBase<PocketSmithInstitution, int>, IInstitutionService, IPocketSmithService
 {
-    public InstitutionService(int userId, string apiKey) : base(userId, apiKey)
+    private readonly CreateInstitutionValidator _createValidator;
+
+    public InstitutionService(IApiHelper apiHelper, IConfiguration configuration,
+        CreateInstitutionValidator createValidator) : base(apiHelper, configuration)
     {
+        _createValidator = createValidator;
+    }
+    public InstitutionService(IApiHelper apiHelper, int userId, string apiKey, CreateInstitutionValidator createValidator) : base(apiHelper, userId, apiKey)
+    {
+        _createValidator = createValidator;
+    }
+
+    public new virtual async Task<IEnumerable<PocketSmithInstitution>> GetAllAsync()
+    {
+        return await base.GetAllAsync();
     }
 
     public virtual async Task<PocketSmithInstitution> CreateAsync(CreatePocketSmithInstitution createItem)
     {
+        await _createValidator.ValidateAndThrowAsync(createItem);
+
         var uri = UriBuilder.AddRouteFromModel(typeof(PocketSmithUser))
             .AddRoute(UserId.ToString())
             .AddRouteFromModel(typeof(PocketSmithInstitution))
-            .Uri;
+            .GetUriAndReset();
 
         var requestObject = new
         {
@@ -32,9 +51,14 @@ public class InstitutionService : ServiceBase<PocketSmithInstitution, int>, IIns
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithInstitution))
             .AddRoute(id.ToString())
-            .Uri;
+            .GetUriAndReset();
 
         await ApiHelper.DeleteAsync(uri);
+    }
+
+    public new virtual async Task<PocketSmithInstitution> GetByIdAsync(int id)
+    {
+        return await base.GetByIdAsync(id);
     }
 
     public virtual async Task<PocketSmithInstitution> UpdateAsync(UpdatePocketSmithInstitution updatedInstitution, int id)
@@ -42,7 +66,7 @@ public class InstitutionService : ServiceBase<PocketSmithInstitution, int>, IIns
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithInstitution))
             .AddRoute(id.ToString())
-            .Uri;
+            .GetUriAndReset();
 
         var request = new
         {

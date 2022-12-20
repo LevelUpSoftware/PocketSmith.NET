@@ -24,7 +24,7 @@ public static class EnumExtensions
                 "The specified enumerator does not contain any properties with the [Display()] attribute.");
         }
 
-        return ((DisplayAttribute)attributes.ElementAt(0)).Name;
+        return ((DisplayAttribute)attributes.ElementAt(0)).Name!;
     }
 
     public static bool TryParse(string inputString, out PocketSmithAccountType? accountType)
@@ -39,7 +39,7 @@ public static class EnumExtensions
                 continue;
             }
 
-            string attributeValue = ((DisplayAttribute)selectedAttribute!).Name;
+            string? attributeValue = ((DisplayAttribute)selectedAttribute!).Name;
 
             if (attributeValue == inputString)
             {
@@ -58,7 +58,7 @@ public static class EnumExtensions
 
     public static bool TryParse(string inputString, out PocketSmithRefundBehavior? accountType)
     {
-        var members = typeof(PocketSmithAccountType).GetMembers();
+        var members = typeof(PocketSmithRefundBehavior).GetMembers();
 
         foreach (var member in members)
         {
@@ -87,7 +87,7 @@ public static class EnumExtensions
 
     public static bool TryParse(string inputString, out PocketSmithTransactionType? accountType)
     {
-        var members = typeof(PocketSmithAccountType).GetMembers();
+        var members = typeof(PocketSmithTransactionType).GetMembers();
 
         foreach (var member in members)
         {
@@ -108,7 +108,6 @@ public static class EnumExtensions
                     return true;
                 }
             }
-
         }
         accountType = null;
         return false;

@@ -1,76 +1,77 @@
-﻿using PocketSmith.NET.Exceptions;
-using PocketSmith.NET.Extensions;
-using System.Net.Http.Json;
-using System.Text.Json;
+﻿using System.Diagnostics;
+using Microsoft.Extensions.Configuration;
+using PocketSmith.NET.ApiHelper;
 using PocketSmith.NET.Constants;
+using PocketSmith.NET.Exceptions;
+using PocketSmith.NET.Extensions;
 using PocketSmith.NET.Models;
 
 namespace PocketSmith.NET.Services;
 
 public abstract class ServiceBase<TModel, TId>
-where TModel: class
 {
-    protected ApiHelper ApiHelper;
-    protected readonly UriBuilder UriBuilder;
+    protected IApiHelper ApiHelper { get; }
+    protected UriBuilder UriBuilder { get; }
     protected int UserId { get; }
 
-    protected ServiceBase(int userId, string apiKey)
+    protected ServiceBase(IApiHelper apiHelper, int userId, string apiKey)
     {
-        
-        if (!validateCredentials(userId, apiKey))
-        {
-            throw new InvalidOperationException("The provided userId or apiKey is invalid.");
-        }
-        UserId = userId;
         UriBuilder = new UriBuilder(PocketSmithUriConstants.BASE_URI);
-        ApiHelper = new ApiHelper(apiKey);
+        ApiHelper = apiHelper;
+        ApiHelper.SetApiKey(apiKey);
+
+        UserId = userId;
     }
 
-    public virtual async Task<IEnumerable<TModel>> GetAllAsync()
+    protected ServiceBase(IApiHelper apiHelper, IConfiguration configuration)
     {
-        var uri = UriBuilder
-            .AddRouteFromModel(typeof(TModel))
-            .Uri;
+        UriBuilder = new UriBuilder(PocketSmithUriConstants.BASE_URI);
+        ApiHelper = apiHelper;
 
-        var results = await ApiHelper.GetAsync<List<TModel>>(uri);
-        return results;
-    }
-
-    public virtual async Task<TModel> GetByIdAsync(TId id)
-    {
-        var uri = UriBuilder.AddRouteFromModel(typeof(PocketSmithUser)).AddRoute($"{id}").Uri;
-
-        var httpResponse = await ApiHelper.HttpClient.GetAsync(uri);
-        var responseContentString = await httpResponse.Content.ReadAsStringAsync();
-
-        if (!httpResponse.IsSuccessStatusCode)
-        {
-            throw new RestApiException(uri.AbsoluteUri, httpResponse.StatusCode, responseContentString);
-        }
-
-        var resultObject = JsonSerializer.Deserialize<TModel>(responseContentString);
-
-        return resultObject;
-    }
-
-    private bool validateCredentials(long userId, string apiKey)
-    {
-        if (userId < 1)
-        {
-            throw new ArgumentException($"{nameof(userId)} is invalid.");
-        }
-
+        var apiKey = configuration.GetSection("pocketSmith:apiKey").Value;
         if (string.IsNullOrEmpty(apiKey))
         {
-            throw new ArgumentNullException(nameof(apiKey));
+            throw new InvalidOperationException("Configuration does not contain a valid apiKey.");
+        }
+        ApiHelper.SetApiKey(apiKey);
+
+        var userId = configuration.GetSection("pocketSmith:userId").Value;
+        var parseSuccess = int.TryParse(userId, out int parsedUserId);
+
+        if (!parseSuccess || parsedUserId == 0)
+        {
+            throw new InvalidOperationException("Configuration does not contain a valid userId.");
+        }
+
+        UserId = parsedUserId;
+    }
+
+    private protected async Task<IEnumerable<TModel>> GetAllAsync()
+    {
+        var uri = UriBuilder
+            .AddRouteFromModel(typeof(PocketSmithUser))
+            .AddRoute(UserId.ToString())
+            .AddRouteFromModel(typeof(TModel))
+            .GetUriAndReset();
+
+        var results = await ApiHelper.GetAsync<List<TModel>>(uri);
+        return results ?? new List<TModel>();
+    }
+
+    private protected async Task<TModel?> GetByIdAsync(TId id)
+    {
+        if (id == null || id.Equals(""))
+        {
+            throw new PocketSmithValidationException("Id cannot be null.");
         }
 
         var uri = UriBuilder
-            .AddRouteFromModel(typeof(PocketSmithUser))
-            .AddRoute(userId.ToString())
-            .Uri;
+            .AddRouteFromModel(typeof(TModel))
+            .AddRoute(id.ToString())
+            .GetUriAndReset();
 
-        var results = ApiHelper.HttpClient.GetAsync(uri).Result;
-        return results.IsSuccessStatusCode;
+        var response = await ApiHelper.GetAsync<TModel>(uri);
+       
+        return response;
     }
 }
