@@ -17,8 +17,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-    <Content Include="README.md">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    <Content Include="README.md" pack="true" PackabePath=".">
     </Content>
   </ItemGroup>
 
