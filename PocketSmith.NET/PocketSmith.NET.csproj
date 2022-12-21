@@ -40,12 +40,6 @@
     <Folder Include="Services\Users\Models\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\..\PocketSmithAttachmentManager\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.3.0" />
