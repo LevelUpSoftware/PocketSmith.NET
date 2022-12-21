@@ -16,6 +16,12 @@
     <None Remove="Services\Users\Mappers\**" />
   </ItemGroup>
 
+	<ItemGroup>
+    <Content Include="README.md">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Attributes\" />
@@ -39,12 +45,6 @@
     <Folder Include="Services\Transactions\Validators\" />
     <Folder Include="Services\Users\Models\" />
   </ItemGroup>
-
-	<ItemGroup>
-        <Content Include="README.md" pack="true" PackagePath=".">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-	</ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.3.0" />
