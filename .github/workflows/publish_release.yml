@@ -32,5 +32,5 @@ jobs:
       run: | 
         dotnet pack --configuration Release --output ./release
         cd ./release
-        nuget push **\*.nupkg -Source 'https://nuget.pkg.github.com/LevelUpSoftware/index.json' -ApiKey ${{secrets.NUGET_PUBLISH}}
+        nuget push **\*.nupkg -Source 'https://nuget.pkg.github.com/LevelUpSoftware/index.json' -ApiKey ${{secrets.NUGET_PUBLISH}} -SkipDuplicate
         dotnet nuget push **\*.nupkg --api-key ${{secrets.NUGET_PUBLIC_REPOSITORY}} --source https://api.nuget.org/v3/index.json
