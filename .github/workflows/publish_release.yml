@@ -23,12 +23,10 @@ jobs:
 
     - name: Build
       run: |
-        cd PocketSmith.NET
         dotnet build --configuration Release --no-restore
         
     - name: Test
       run: |
-        cd PocketSmith.NET
         dotnet test --no-restore --verbosity normal
     - name: Deploy
       run: | 
