@@ -17,7 +17,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-    <Content Include="README.md" pack="true" PackabePath=".">
+    <Content Include="README.md" pack="true" PackagePath=".">
     </Content>
   </ItemGroup>
 
