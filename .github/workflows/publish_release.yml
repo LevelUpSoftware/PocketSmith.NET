@@ -23,7 +23,7 @@ jobs:
 
     - name: Build
       run: |
-        cd PocketSmith.NET
+        #cd PocketSmith.NET
         dotnet build --configuration Release --no-restore
         
     - name: Test
