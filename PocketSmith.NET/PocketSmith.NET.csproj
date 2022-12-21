@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -41,7 +41,9 @@
   </ItemGroup>
 
 	<ItemGroup>
-        <None Include="README.md" pack="true" PackagePath="." />
+        <Content Include="README.md" pack="true" PackagePath=".">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
 	</ItemGroup>
 
   <ItemGroup>
