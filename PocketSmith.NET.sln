@@ -5,7 +5,12 @@ VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PocketSmith.NET", "PocketSmith.NET\PocketSmith.NET.csproj", "{98FA94F5-57F0-479A-875E-5B7737FEEB44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketSmith.NET.UnitTests", "PocketSmith.NET.UnitTests\PocketSmith.NET.UnitTests.csproj", "{CEBD224A-7C8B-4879-9202-E2A8F0A3FAA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PocketSmith.NET.UnitTests", "PocketSmith.NET.UnitTests\PocketSmith.NET.UnitTests.csproj", "{CEBD224A-7C8B-4879-9202-E2A8F0A3FAA3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F1445991-10AD-4C23-99D2-1AC81877D6F4}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

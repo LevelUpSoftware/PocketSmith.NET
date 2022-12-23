@@ -27,7 +27,7 @@ public class BudgetService : ServiceBase<PocketSmithBudget, int>, IBudgetService
         await ApiHelper.DeleteAsync(uri);
     }
 
-    public virtual async Task<IList<PocketSmithBudget>> GetAllAsync(bool rollUp = false)
+    public virtual async Task<IEnumerable<PocketSmithBudget>> GetAllAsync(bool rollUp = false)
     {
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithUser))

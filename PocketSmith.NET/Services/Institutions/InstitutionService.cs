@@ -22,7 +22,7 @@ public class InstitutionService : ServiceBase<PocketSmithInstitution, int>, IIns
         _createValidator = createValidator;
     }
 
-    public new virtual async Task<IList<PocketSmithInstitution>> GetAllAsync()
+    public new virtual async Task<IEnumerable<PocketSmithInstitution>> GetAllAsync()
     {
         return await base.GetAllAsync();
     }

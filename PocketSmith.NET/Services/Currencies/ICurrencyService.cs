@@ -4,6 +4,6 @@ namespace PocketSmith.NET.Services.Currencies;
 
 public interface ICurrencyService
 {
-    Task<IList<PocketSmithCurrency>> GetAllAsync();
+    Task<IEnumerable<PocketSmithCurrency>> GetAllAsync();
     Task<PocketSmithCurrency?> GetByIdAsync(string id);
 }

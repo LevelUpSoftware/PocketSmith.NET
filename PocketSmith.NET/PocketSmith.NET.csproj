@@ -4,21 +4,18 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <RepositoryUrl>https://github.com/LevelUpSoftware/PocketSmith.NET</RepositoryUrl>
     <PackageTags>pocketsmith;pocket;smith;accounting;personal;finance;api;bookkeeping</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <Authors>Nate Burdick</Authors>
+	  <Company>LevelUp Software</Company>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Services\Users\Mappers\**" />
     <EmbeddedResource Remove="Services\Users\Mappers\**" />
     <None Remove="Services\Users\Mappers\**" />
-  </ItemGroup>
-
-	<ItemGroup>
-    <Content Include="README.md" pack="true" PackagePath=".">
-    </Content>
   </ItemGroup>
 
   <ItemGroup>

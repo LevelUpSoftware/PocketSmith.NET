@@ -13,7 +13,7 @@ public class SavedSearchService : ServiceBase<PocketSmithSavedSearch, int>, ISav
     {
     }
 
-    public new virtual async Task<IList<PocketSmithSavedSearch>> GetAllAsync()
+    public new virtual async Task<IEnumerable<PocketSmithSavedSearch>> GetAllAsync()
     {
         return await base.GetAllAsync();
     }

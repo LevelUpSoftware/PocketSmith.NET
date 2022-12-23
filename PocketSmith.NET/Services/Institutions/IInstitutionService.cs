@@ -8,6 +8,6 @@ public interface IInstitutionService
     Task<PocketSmithInstitution?> GetByIdAsync(int id);
     Task<PocketSmithInstitution> UpdateAsync(UpdatePocketSmithInstitution updatedInstitution, int id);
     Task DeleteAsync(int id);
-    Task<IList<PocketSmithInstitution>> GetAllAsync();
+    Task<IEnumerable<PocketSmithInstitution>> GetAllAsync();
     Task<PocketSmithInstitution> CreateAsync(CreatePocketSmithInstitution createItem);
 }

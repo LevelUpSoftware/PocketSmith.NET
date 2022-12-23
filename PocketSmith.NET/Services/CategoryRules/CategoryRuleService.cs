@@ -43,7 +43,7 @@ public class CategoryRuleService : ServiceBase<PocketSmithCategoryRule, string>,
         return response;
     }
 
-    public new virtual async Task<IList<PocketSmithCategoryRule>> GetAllAsync()
+    public new virtual async Task<IEnumerable<PocketSmithCategoryRule>> GetAllAsync()
     {
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithUser))
