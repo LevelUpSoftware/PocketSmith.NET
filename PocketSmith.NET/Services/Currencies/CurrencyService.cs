@@ -14,7 +14,7 @@ public class CurrencyService : ServiceBase<PocketSmithCurrency, string>, ICurren
     {
     }
 
-    public new virtual async Task<IList<PocketSmithCurrency>> GetAllAsync()
+    public new virtual async Task<IEnumerable<PocketSmithCurrency>> GetAllAsync()
     {
         var uri = UriBuilder.AddRouteFromModel(typeof(PocketSmithCurrency))
             .GetUriAndReset();

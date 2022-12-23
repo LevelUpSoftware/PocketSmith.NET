@@ -6,6 +6,6 @@ namespace PocketSmith.NET.Services.TransactionAccounts;
 public interface ITransactionAccountService
 {
     Task<PocketSmithTransactionAccount?> GetByIdAsync(int id);
-    Task<IList<PocketSmithTransactionAccount>> GetAllAsync();
+    Task<IEnumerable<PocketSmithTransactionAccount>> GetAllAsync();
     Task<PocketSmithTransactionAccount> UpdateAsync(UpdatePocketSmithTransactionAccount updateItem, int id);
 }

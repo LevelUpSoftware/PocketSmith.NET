@@ -46,7 +46,7 @@ public abstract class ServiceBase<TModel, TId>
         UserId = parsedUserId;
     }
 
-    private protected async Task<IList<TModel>> GetAllAsync()
+    private protected async Task<IEnumerable<TModel>> GetAllAsync()
     {
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithUser))

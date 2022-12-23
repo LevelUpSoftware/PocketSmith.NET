@@ -2,5 +2,5 @@
 
 public interface ILabelService
 {
-    Task<IList<string>> GetAllAsync();
+    Task<IEnumerable<string>> GetAllAsync();
 }

@@ -68,7 +68,7 @@ public class AttachmentService : ServiceBase<PocketSmithAttachment, int>, IAttac
         await ApiHelper.DeleteAsync(uri);
     }
 
-    public virtual async Task<IList<PocketSmithAttachment>> GetAllAsync(bool onlyUnassigned = false)
+    public virtual async Task<IEnumerable<PocketSmithAttachment>> GetAllAsync(bool onlyUnassigned = false)
     {
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithUser))
@@ -80,7 +80,7 @@ public class AttachmentService : ServiceBase<PocketSmithAttachment, int>, IAttac
         return response ?? new List<PocketSmithAttachment>();
     }
 
-    public virtual async Task<IList<PocketSmithAttachment>> GetAllByTransactionIdAsync(int transactionId)
+    public virtual async Task<IEnumerable<PocketSmithAttachment>> GetAllByTransactionIdAsync(int transactionId)
     {
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithTransaction))

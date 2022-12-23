@@ -50,7 +50,7 @@ public class CategoryService : ServiceBase<PocketSmithCategory, int>, ICategoryS
         return await base.GetByIdAsync(id);
     }
 
-    public new virtual async Task<IList<PocketSmithCategory>> GetAllAsync()
+    public new virtual async Task<IEnumerable<PocketSmithCategory>> GetAllAsync()
     {
         var uri = UriBuilder.AddRouteFromModel(typeof(PocketSmithUser))
             .AddRoute(UserId.ToString())
