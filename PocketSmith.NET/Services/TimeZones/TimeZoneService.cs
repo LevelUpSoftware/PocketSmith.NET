@@ -14,13 +14,13 @@ public class TimeZoneService : ServiceBase<PocketSmithTimeZone, int>, ITimeZoneS
     {
     }
 
-    public new virtual async Task<IEnumerable<PocketSmithTimeZone>> GetAllAsync()
+    public new virtual async Task<IList<PocketSmithTimeZone>> GetAllAsync()
     {
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithTimeZone))
             .GetUriAndReset();
 
         var results = await ApiHelper.GetAsync<List<PocketSmithTimeZone>>(uri);
-        return results;
+        return results ?? new List<PocketSmithTimeZone>();
     }
 }

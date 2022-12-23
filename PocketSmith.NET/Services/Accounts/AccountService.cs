@@ -21,7 +21,7 @@ public class AccountService : ServiceBase<PocketSmithAccount, int>, IAccountServ
         _createValidator = createValidator;
     }
 
-    public new virtual async Task<PocketSmithAccount> GetByIdAsync(int id)
+    public new virtual async Task<PocketSmithAccount?> GetByIdAsync(int id)
     {
         return await base.GetByIdAsync(id);
     }
@@ -55,12 +55,12 @@ public class AccountService : ServiceBase<PocketSmithAccount, int>, IAccountServ
         await ApiHelper.DeleteAsync(uri);
     }
 
-    public new virtual async Task<IEnumerable<PocketSmithAccount>> GetAllAsync()
+    public new virtual async Task<IList<PocketSmithAccount>> GetAllAsync()
     {
         return await base.GetAllAsync();
     }
 
-    public virtual async Task<IEnumerable<PocketSmithAccount>> UpdateDisplayOrder(List<int> accountIds)
+    public virtual async Task<IList<PocketSmithAccount>> UpdateDisplayOrder(List<int> accountIds)
     {
         var accounts = await GetAllAsync();
         if (!accounts.Any())
@@ -111,7 +111,7 @@ public class AccountService : ServiceBase<PocketSmithAccount, int>, IAccountServ
         var response = await ApiHelper.PostAsync<PocketSmithAccount>(uri, request);
         return response;
     }
-    public virtual async Task<IEnumerable<PocketSmithAccount>> GetAllByInstitutionIdAsync(int institutionId)
+    public virtual async Task<IList<PocketSmithAccount>> GetAllByInstitutionIdAsync(int institutionId)
     {
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithInstitution))
@@ -120,6 +120,6 @@ public class AccountService : ServiceBase<PocketSmithAccount, int>, IAccountServ
             .GetUriAndReset();
 
         var response = await ApiHelper.GetAsync<List<PocketSmithAccount>>(uri);
-        return response;
+        return response ?? new List<PocketSmithAccount>();
     }
 }
