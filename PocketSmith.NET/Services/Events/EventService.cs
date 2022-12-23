@@ -55,7 +55,7 @@ public class EventService : ServiceBase<PocketSmithEvent, string>, IEventService
         await ApiHelper.DeleteAsync(uri);
     }
 
-    public virtual async Task<IEnumerable<PocketSmithEvent>> GetAllByScenarioIdAsync(int scenarioId, DateOnly startDate, DateOnly endDate)
+    public virtual async Task<IList<PocketSmithEvent>> GetAllByScenarioIdAsync(int scenarioId, DateOnly startDate, DateOnly endDate)
     {
         var uri = UriBuilder.AddRouteFromModel(typeof(PocketSmithAccountScenario))
             .AddRoute(scenarioId.ToString())
@@ -65,10 +65,10 @@ public class EventService : ServiceBase<PocketSmithEvent, string>, IEventService
             .GetUriAndReset();
 
         var response = await ApiHelper.GetAsync<List<PocketSmithEvent>>(uri);
-        return response;
+        return response ?? new List<PocketSmithEvent>();
     }
 
-    public virtual async Task<IEnumerable<PocketSmithEvent>> GetAllAsync(DateOnly startDate, DateOnly endDate)
+    public virtual async Task<IList<PocketSmithEvent>> GetAllAsync(DateOnly startDate, DateOnly endDate)
     {
         var uri = UriBuilder.AddRouteFromModel(typeof(PocketSmithUser))
             .AddRoute(UserId.ToString())
@@ -78,7 +78,7 @@ public class EventService : ServiceBase<PocketSmithEvent, string>, IEventService
             .GetUriAndReset();
 
         var response = await ApiHelper.GetAsync<List<PocketSmithEvent>>(uri);
-        return response;
+        return response ?? new List<PocketSmithEvent>();
     }
 
     public virtual async Task<PocketSmithEvent> UpdateAsync(UpdatePocketSmithEvent updateItem, string id)
@@ -106,7 +106,7 @@ public class EventService : ServiceBase<PocketSmithEvent, string>, IEventService
         return response;
     }
 
-    public new virtual async Task<PocketSmithEvent> GetByIdAsync(string id)
+    public new virtual async Task<PocketSmithEvent?> GetByIdAsync(string id)
     {
         return await base.GetByIdAsync(id);
     }

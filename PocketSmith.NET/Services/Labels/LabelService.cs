@@ -14,7 +14,7 @@ public class LabelService : ServiceBase<string, int>, ILabelService, IPocketSmit
     {
     }
 
-    public new virtual async Task<IEnumerable<string>> GetAllAsync()
+    public new virtual async Task<IList<string>> GetAllAsync()
     {
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithUser))
@@ -23,6 +23,6 @@ public class LabelService : ServiceBase<string, int>, ILabelService, IPocketSmit
             .GetUriAndReset();
 
         var response = await ApiHelper.GetAsync<List<string>>(uri);
-        return response;
+        return response ?? new List<string>();
     }
 }

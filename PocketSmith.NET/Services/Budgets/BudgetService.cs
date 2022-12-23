@@ -27,7 +27,7 @@ public class BudgetService : ServiceBase<PocketSmithBudget, int>, IBudgetService
         await ApiHelper.DeleteAsync(uri);
     }
 
-    public virtual async Task<IEnumerable<PocketSmithBudget>> GetAllAsync(bool rollUp = false)
+    public virtual async Task<IList<PocketSmithBudget>> GetAllAsync(bool rollUp = false)
     {
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithUser))
@@ -37,10 +37,10 @@ public class BudgetService : ServiceBase<PocketSmithBudget, int>, IBudgetService
             .GetUriAndReset();
 
         var response = await ApiHelper.GetAsync<List<PocketSmithBudget>>(uri);
-        return response;
+        return response ?? new List<PocketSmithBudget>();
     }
 
-    public virtual async Task<PocketSmithBudgetEvent> GetBudgetSummaryAsync(BudgetEventPeriod period, int periodInterval, DateOnly startDate, DateOnly endDate)
+    public virtual async Task<PocketSmithBudgetEvent?> GetBudgetSummaryAsync(BudgetEventPeriod period, int periodInterval, DateOnly startDate, DateOnly endDate)
     {
         validateDates(startDate, endDate);
 
@@ -58,7 +58,7 @@ public class BudgetService : ServiceBase<PocketSmithBudget, int>, IBudgetService
         return response;
     }
 
-    public virtual async Task<PocketSmithBudgetEvent> GetTrendAnalysisAsync(BudgetEventPeriod period, int periodInterval, DateOnly startDate, DateOnly endDate, List<int> categoryIds, List<int> scenarioIds)
+    public virtual async Task<PocketSmithBudgetEvent?> GetTrendAnalysisAsync(BudgetEventPeriod period, int periodInterval, DateOnly startDate, DateOnly endDate, List<int> categoryIds, List<int> scenarioIds)
     {
         validateDates(startDate, endDate);
         validateCategoriesandScenarios(categoryIds, scenarioIds);

@@ -11,7 +11,7 @@ public interface ITransactionService
         int? pageNumber = null,
         PocketSmithTransactionSearch? searchParameters = null);
 
-    Task<PocketSmithTransaction> GetByIdAsync(int id);
+    Task<PocketSmithTransaction?> GetByIdAsync(int id);
 
     Task<PocketSmithTransactionSummary> GetAllAsync(int? pageNumber = null,
         PocketSmithTransactionSearch? searchParameters = null);
