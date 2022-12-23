@@ -41,6 +41,10 @@
     <Folder Include="Services\Transactions\Validators\" />
     <Folder Include="Services\Users\Models\" />
   </ItemGroup>
+	
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath=""></None>
+	</ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.3.0" />
