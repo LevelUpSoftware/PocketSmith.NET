@@ -1,8 +1,10 @@
 # PocketSmith.NET
 A .NET Core API library for PocketSmith accounting suite. 
-<br>
-PocketSmith Wegsite: https://www.pocketsmith.com<br>
-PocketSmith API Docs: https://developers.pocketsmith.com<br>
+
+PocketSmith Website        | https://www.pocketsmith.com      
+PocketSmith API Docs       | https://developers.pocketsmith.com
+PocketSmith.NET Repository | https://github.com/LevelUpSoftware/PocketSmith.NET
+
 
 ## Getting Started
 You'll need your PocketSmith UserId and an API Key.
@@ -43,17 +45,10 @@ Replace the userId and apiKey arguments with your [int]userId and [string]apiKey
 Dependency injection uses the ASP.Net Core service provider to automatically manage dependencies.
 This method requires the userId and apiKey to be stored in the application configuration. It uses MIcrosofts IConfiguration interface. You can store these parameters in appsettings.json, Azure configuration, etc.
 
-Let's use the appsettings.json file for ASP.Net Core as an example. Here we've just added a section for the pocketsmith configs to the default file in a new ASP.Net Core project.
+Let's use the appsettings.json file for ASP.Net Core as an example. Here we've just added a section for the pocketsmith configs to the default settings file in a new ASP.Net Core project.
 
 ```
 {
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
-    }
-  },
-  "AllowedHosts": "*",
   "pocketSmith": {
     "userId": 12345,
     "apiKey": "insert_apiKey_here"
@@ -105,7 +100,7 @@ First, you'll want to make sure your startup sequence (either in the Startup or 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddHttpClient
+builder.Services.AddHttpClient();
 ```
 
 Then, you can create instances of the service, along with the required `IApiHelper` dependency.

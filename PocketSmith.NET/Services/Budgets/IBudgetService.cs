@@ -5,7 +5,7 @@ namespace PocketSmith.NET.Services.Budgets;
 
 public interface IBudgetService
 {
-    Task<IList<PocketSmithBudget>> GetAllAsync(bool rollUp = false);
+    Task<IEnumerable<PocketSmithBudget>> GetAllAsync(bool rollUp = false);
 
     Task<PocketSmithBudgetEvent?> GetBudgetSummaryAsync(BudgetEventPeriod period,
         int periodInterval, DateOnly startDate, DateOnly endDate);

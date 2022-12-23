@@ -23,7 +23,7 @@ public class TransactionAccountService : ServiceBase<PocketSmithTransactionAccou
         return await base.GetByIdAsync(id);
     }
 
-    public new virtual async Task<IList<PocketSmithTransactionAccount>> GetAllAsync()
+    public new virtual async Task<IEnumerable<PocketSmithTransactionAccount>> GetAllAsync()
     {
         return await base.GetAllAsync();
     }

@@ -16,11 +16,6 @@
     <None Remove="Services\Users\Mappers\**" />
   </ItemGroup>
 
-	<ItemGroup>
-    <Content Include="README.md" pack="true" PackagePath=".">
-    </Content>
-  </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Attributes\" />

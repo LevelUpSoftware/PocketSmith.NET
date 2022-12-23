@@ -14,7 +14,7 @@ public class TimeZoneService : ServiceBase<PocketSmithTimeZone, int>, ITimeZoneS
     {
     }
 
-    public new virtual async Task<IList<PocketSmithTimeZone>> GetAllAsync()
+    public new virtual async Task<IEnumerable<PocketSmithTimeZone>> GetAllAsync()
     {
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithTimeZone))
