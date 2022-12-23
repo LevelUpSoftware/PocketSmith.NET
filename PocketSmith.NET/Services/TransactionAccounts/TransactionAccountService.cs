@@ -18,12 +18,12 @@ public class TransactionAccountService : ServiceBase<PocketSmithTransactionAccou
     {
     }
 
-    public new virtual async Task<PocketSmithTransactionAccount> GetByIdAsync(int id)
+    public new virtual async Task<PocketSmithTransactionAccount?> GetByIdAsync(int id)
     {
         return await base.GetByIdAsync(id);
     }
 
-    public new virtual async Task<IEnumerable<PocketSmithTransactionAccount>> GetAllAsync()
+    public new virtual async Task<IList<PocketSmithTransactionAccount>> GetAllAsync()
     {
         return await base.GetAllAsync();
     }

@@ -89,7 +89,7 @@ public class TransactionService : ServiceBase<PocketSmithTransaction, int>, ITra
         return results;
     }
 
-    public new virtual async Task<PocketSmithTransaction> GetByIdAsync(int id)
+    public new virtual async Task<PocketSmithTransaction?> GetByIdAsync(int id)
     {
         return await base.GetByIdAsync(id);
     }

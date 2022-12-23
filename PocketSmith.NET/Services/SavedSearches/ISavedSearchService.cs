@@ -4,5 +4,5 @@ namespace PocketSmith.NET.Services.SavedSearches;
 
 public interface ISavedSearchService
 {
-    Task<IEnumerable<PocketSmithSavedSearch>> GetAllAsync();
+    Task<IList<PocketSmithSavedSearch>> GetAllAsync();
 }

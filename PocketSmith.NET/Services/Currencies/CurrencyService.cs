@@ -14,16 +14,16 @@ public class CurrencyService : ServiceBase<PocketSmithCurrency, string>, ICurren
     {
     }
 
-    public new virtual async Task<IEnumerable<PocketSmithCurrency>> GetAllAsync()
+    public new virtual async Task<IList<PocketSmithCurrency>> GetAllAsync()
     {
         var uri = UriBuilder.AddRouteFromModel(typeof(PocketSmithCurrency))
             .GetUriAndReset();
 
         var response = await ApiHelper.GetAsync<List<PocketSmithCurrency>>(uri);
-        return response;
+        return response ?? new List<PocketSmithCurrency>();
     }
 
-    public new virtual async Task<PocketSmithCurrency> GetByIdAsync(string id)
+    public new virtual async Task<PocketSmithCurrency?> GetByIdAsync(string id)
     {
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithCurrency))

@@ -17,7 +17,7 @@ public class ApiHelper : IApiHelper
         HttpClient = httpClient;
     }
 
-    public async Task<TApiModel?> PostAsync<TApiModel>(Uri uri, object requestBody)
+    public async Task<TApiModel> PostAsync<TApiModel>(Uri uri, object requestBody)
     {
         var httpResponse = await HttpClient.PostAsJsonAsync(uri, requestBody);
         var contentResponseString = await httpResponse.Content.ReadAsStringAsync();
@@ -31,7 +31,7 @@ public class ApiHelper : IApiHelper
         return resultObject!;
     }
 
-    public async Task<TApiModel?> PutAsync<TApiModel>(Uri uri, object requestBody)
+    public async Task<TApiModel> PutAsync<TApiModel>(Uri uri, object requestBody)
     {
         var httpResponse = await HttpClient.PutAsJsonAsync(uri, requestBody);
         var contentResponseString = await httpResponse.Content.ReadAsStringAsync();

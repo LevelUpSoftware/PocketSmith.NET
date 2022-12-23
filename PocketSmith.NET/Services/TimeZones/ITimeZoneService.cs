@@ -4,5 +4,5 @@ namespace PocketSmith.NET.Services.TimeZones;
 
 public interface ITimeZoneService
 {
-    Task<IEnumerable<PocketSmithTimeZone>> GetAllAsync();
+    Task<IList<PocketSmithTimeZone>> GetAllAsync();
 }

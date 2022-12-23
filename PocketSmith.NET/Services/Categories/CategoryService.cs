@@ -45,12 +45,12 @@ public class CategoryService : ServiceBase<PocketSmithCategory, int>, ICategoryS
         return response;
     }
 
-    public virtual async Task<PocketSmithCategory> GetByIdAsync(int id)
+    public new virtual async Task<PocketSmithCategory?> GetByIdAsync(int id)
     {
         return await base.GetByIdAsync(id);
     }
 
-    public virtual async Task<IEnumerable<PocketSmithCategory>> GetAllAsync()
+    public new virtual async Task<IList<PocketSmithCategory>> GetAllAsync()
     {
         var uri = UriBuilder.AddRouteFromModel(typeof(PocketSmithUser))
             .AddRoute(UserId.ToString())
@@ -58,7 +58,7 @@ public class CategoryService : ServiceBase<PocketSmithCategory, int>, ICategoryS
             .GetUriAndReset();
 
         var response = await ApiHelper.GetAsync<List<PocketSmithCategory>>(uri);
-        return response;
+        return response ?? new List<PocketSmithCategory>();
     }
 
     public virtual async Task DeleteAsync(int id)
@@ -91,6 +91,4 @@ public class CategoryService : ServiceBase<PocketSmithCategory, int>, ICategoryS
         var response = await ApiHelper.PutAsync<PocketSmithCategory>(uri, request);
         return response;
     }
-
-
 }
