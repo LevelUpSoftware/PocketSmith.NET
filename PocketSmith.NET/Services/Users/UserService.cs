@@ -15,12 +15,12 @@ public class UserService : ServiceBase<PocketSmithUser, int>, IUserService, IPoc
     {
     }
 
-    public virtual async Task<PocketSmithUser> GetAsync()
+    public virtual async Task<PocketSmithUser?> GetAsync()
     {
         return await GetByIdAsync(UserId);
     }
 
-    public virtual async Task<PocketSmithUser> GetAuthorizedUserAsync()
+    public virtual async Task<PocketSmithUser?> GetAuthorizedUserAsync()
     {
         var uri = UriBuilder.AddRoute("me").GetUriAndReset();
         var results = await ApiHelper.GetAsync<PocketSmithUser>(uri);

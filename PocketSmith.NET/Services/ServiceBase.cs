@@ -46,7 +46,7 @@ public abstract class ServiceBase<TModel, TId>
         UserId = parsedUserId;
     }
 
-    private protected async Task<IEnumerable<TModel>> GetAllAsync()
+    private protected async Task<IList<TModel>> GetAllAsync()
     {
         var uri = UriBuilder
             .AddRouteFromModel(typeof(PocketSmithUser))
@@ -67,7 +67,7 @@ public abstract class ServiceBase<TModel, TId>
 
         var uri = UriBuilder
             .AddRouteFromModel(typeof(TModel))
-            .AddRoute(id.ToString())
+            .AddRoute(id.ToString()!)
             .GetUriAndReset();
 
         var response = await ApiHelper.GetAsync<TModel>(uri);

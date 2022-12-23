@@ -5,9 +5,9 @@ namespace PocketSmith.NET.Services.Institutions;
 
 public interface IInstitutionService
 {
-    Task<PocketSmithInstitution> GetByIdAsync(int id);
+    Task<PocketSmithInstitution?> GetByIdAsync(int id);
     Task<PocketSmithInstitution> UpdateAsync(UpdatePocketSmithInstitution updatedInstitution, int id);
     Task DeleteAsync(int id);
-    Task<IEnumerable<PocketSmithInstitution>> GetAllAsync();
+    Task<IList<PocketSmithInstitution>> GetAllAsync();
     Task<PocketSmithInstitution> CreateAsync(CreatePocketSmithInstitution createItem);
 }

@@ -5,11 +5,11 @@ namespace PocketSmith.NET.Services.Accounts;
 
 public interface IAccountService
 {
-    Task<PocketSmithAccount> GetByIdAsync(int id);
+    Task<PocketSmithAccount?> GetByIdAsync(int id);
     Task<PocketSmithAccount> UpdateAsync(UpdatePocketSmithAccount updateAccount, int id);
     Task DeleteAsync(int id);
-    Task<IEnumerable<PocketSmithAccount>> GetAllAsync();
-    Task<IEnumerable<PocketSmithAccount>> UpdateDisplayOrder(List<int> accountIds);
+    Task<IList<PocketSmithAccount>> GetAllAsync();
+    Task<IList<PocketSmithAccount>> UpdateDisplayOrder(List<int> accountIds);
     Task<PocketSmithAccount> CreateAsync(CreatePocketSmithAccount createItem);
-    Task<IEnumerable<PocketSmithAccount>> GetAllByInstitutionIdAsync(int institutionId);
+    Task<IList<PocketSmithAccount>> GetAllByInstitutionIdAsync(int institutionId);
 }
