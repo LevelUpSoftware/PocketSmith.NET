@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using PocketSmith.NET.Attributes;
+using PocketSmith.NET.JsonConverters;
 
 namespace PocketSmith.NET.Models;
 
@@ -21,8 +22,9 @@ public class PocketSmithCategory
     [JsonPropertyName("is_bill")]
     public bool IsBill { get; set; }
 
-    [JsonPropertyName("refund_behavior")]
-    public string RefundBehavior { get; set; }
+    [JsonConverter(typeof(RefundBehaviorJsonConverter))]
+    [JsonPropertyName("refund_behaviour")]
+    public PocketSmithRefundBehavior? RefundBehavior { get; set; }
 
     [JsonPropertyName("children")]
     public List<PocketSmithCategory> Children { get; set; }
