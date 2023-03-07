@@ -7,7 +7,7 @@ namespace PocketSmith.NET.Models;
 public class PocketSmithCategoryRule
 {
     [JsonPropertyName("id")]
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     [JsonPropertyName("category")]
     public PocketSmithCategory Category { get; set; }

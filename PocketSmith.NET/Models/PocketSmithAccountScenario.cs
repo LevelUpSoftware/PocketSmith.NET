@@ -7,9 +7,9 @@ namespace PocketSmith.NET.Models;
 public class PocketSmithAccountScenario
 {
     [JsonPropertyName("id")]
-    public long Id { get; set; }
+    public int Id { get; set; }
     [JsonPropertyName("account_id")]
-    public long? AccountId { get; set; }
+    public int? AccountId { get; set; }
     [JsonPropertyName("title")]
     public string Title { get; set; }
     [JsonPropertyName("description")]
@@ -17,7 +17,7 @@ public class PocketSmithAccountScenario
     [JsonPropertyName("interest_rate")]
     public decimal? InterestRate { get; set; }
     [JsonPropertyName("interest_rate_repeat_id")]
-    public long? InterestRateRepeatId { get; set; }
+    public int? InterestRateRepeatId { get; set; }
     [JsonPropertyName("type")]
     public string Type { get; set; }
     [JsonPropertyName("is_net_worth")]

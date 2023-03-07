@@ -1,6 +1,5 @@
-﻿using System.Text.Json;
+﻿using PocketSmith.NET.Attributes;
 using System.Text.Json.Serialization;
-using PocketSmith.NET.Attributes;
 
 namespace PocketSmith.NET.Models;
 
@@ -8,7 +7,7 @@ namespace PocketSmith.NET.Models;
 public class PocketSmithAttachment
 {
     [JsonPropertyName("id")]
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     [JsonPropertyName("title")]
     public string Title { get; set; }
