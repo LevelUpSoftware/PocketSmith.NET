@@ -8,10 +8,10 @@ namespace PocketSmith.NET.Models;
 public class PocketSmithTransactionAccount
 {
     [JsonPropertyName("id")]
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     [JsonPropertyName("account_id")]
-    public long AccountId { get; set; }
+    public int AccountId { get; set; }
 
     [JsonPropertyName("name")]
     public string Name { get; set; }

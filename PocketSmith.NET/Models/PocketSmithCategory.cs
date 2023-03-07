@@ -8,7 +8,7 @@ namespace PocketSmith.NET.Models;
 public class PocketSmithCategory
 {
     [JsonPropertyName("id")]
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     [JsonPropertyName("title")]
     public string Title { get; set; }
@@ -30,7 +30,7 @@ public class PocketSmithCategory
     public List<PocketSmithCategory> Children { get; set; }
 
     [JsonPropertyName("parent_id")]
-    public long? ParentId { get; set; }
+    public int? ParentId { get; set; }
 
     [JsonPropertyName("roll_up")]
     public bool RollUp { get; set; }

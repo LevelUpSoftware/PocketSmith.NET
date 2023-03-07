@@ -42,7 +42,7 @@ public class PocketSmithEvent
     public int RepeatInterval { get; set; }
 
     [JsonPropertyName("series_id")]
-    public long SeriesId { get; set; }
+    public int SeriesId { get; set; }
 
     [JsonPropertyName("series_start_id")]
     public string SeriesStartId { get; set; }

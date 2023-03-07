@@ -7,7 +7,7 @@ namespace PocketSmith.NET.Models;
 public class PocketSmithSavedSearch
 {
     [JsonPropertyName("id")]
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     [JsonPropertyName("title")]
     public string Title { get; set; }
