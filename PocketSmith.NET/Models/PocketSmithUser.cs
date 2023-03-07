@@ -8,7 +8,7 @@ public class PocketSmithUser
 {
 
     [JsonPropertyName("id")]
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     [JsonPropertyName("login")]
     public string Login { get; set; }

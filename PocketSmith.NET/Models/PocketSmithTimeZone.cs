@@ -10,7 +10,7 @@ public class PocketSmithTimeZone
     public string Name { get; set; }
 
     [JsonPropertyName("utc_offset")]
-    public long UtcOffset { get; set; }
+    public int UtcOffset { get; set; }
 
     [JsonPropertyName("formatted_name")]
     public string FormattedName { get; set; }
