@@ -1,4 +1,4 @@
-name: Publish Release
+name: Publish Nuget Package
 
 on:
   push:
@@ -33,19 +33,4 @@ jobs:
         cd ./release
         nuget push **\*.nupkg -Source 'https://nuget.pkg.github.com/LevelUpSoftware/index.json' -ApiKey ${{secrets.NUGET_PUBLISH}} -SkipDuplicate
         dotnet nuget push **\*.nupkg --api-key ${{secrets.NUGET_PUBLIC_REPOSITORY}} --source https://api.nuget.org/v3/index.json
-        
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env: 
-        GITHUB_TOKEN: ${{ secrets.NUGET_PUBLISH }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: ${{ github.ref }}
-        body: |
-          Changes in this Release
-            - First Change
-            - Second Change
-        draft: false
-        prerelease: false
         
